@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="An impressive and flawless site template that includes various UI elements and countless features, attractive ready-made blocks and rich pages, basically everything you need to create a unique and professional website.">
+    <meta name="keywords"
+        content="bootstrap 5, business, corporate, creative, gulp, marketing, minimal, modern, multipurpose, one page, responsive, saas, sass, seo, startup">
+    <meta name="author" content="elemis">
+    <title>Add Activity | Simonev</title>
+    <link rel="shortcut icon" href="assets/img/favicon.png">
+    <link rel="stylesheet" href="assets/css/plugins.css">
+    <link href="assets/plugins/select2/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="css/activity.css">
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/plugins/sweetalert/sweetalert2.all.min.js"></script>
+    <link href="assets/plugins/sweetalert/sweetalert2.min.css" rel="stylesheet">
+    <script src="assets/plugins/tinymce/tinymce.min.js"></script>
+    <script src="assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- <script src="assets/js/plugins.js"></script> -->
+    <script src="assets/plugins/select2/js/select2.min.js"></script>
+    <!-- <script src="assets/js/theme.js"></script> -->
+    <link rel="stylesheet" type="text/css" href="assets/plugins/toastr/toastr.min.css">
+    <script src="assets/plugins/toastr/toastr.min.js"></script>
+</head>
+<style>
+    div:where(.swal2-container) .swal2-html-container {
+        font-size: 0.8rem !important;
+    }
+    .tox-tinymce{
+        border: 1px solid #289EF9 !important;
+    }
+</style>
+
+<body>
+    <div style="margin-bottom: 70px;">
+        <!-- navbar -->
+        <header class="wrapper bg-soft-primary">
+            <nav class="navbar navbar-expand-lg classic bg-blue-dark position-absolute navbar-light py-0  ">
+                <div class="container flex-lg-row flex-nowrap align-items-center shadow-lg mb-0"
+                    style="min-height: 68px;">
+                    <div class="navbar-brand w-100 row py-2">
+                        <a onclick="goBack()" class="text-white d-flex"
+                            style="width:fit-content;font-weight:bold;align-items: center;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0" />
+                            </svg>
+                            <span class="ms-2 fs-18">Add New Activity</span>
+                        </a>
+                    </div>
+                    <div class="navbar-collapse offcanvas-nav">
+                        <div class="offcanvas-header d-lg-none d-xl-none">
+                            <a href="">
+                                <div class="row">
+                                    <div class="col-4 p-0">
+                                        <img class="" src="assets/img/logowhite.png" srcset="assets/img/logowhite.png"
+                                            alt="" />
+                                    </div>
+                                    <div class="col-8 row align-content-center d-none">
+                                        <h1 class="col-12 text-white fw-900 m-0 text-title">Simonev</h1>
+                                    </div>
+                                </div>
+                            </a>
+                            <button type="button" class="btn-close btn-close-white offcanvas-close offcanvas-nav-close"
+                                aria-label="Close"></button>
+                        </div>
+                        <!-- /.navbar-nav -->
+                    </div>
+                    <!-- /.navbar-collapse -->
+                    <div class="navbar-other ms-lg-4">
+                        <ul class="navbar-nav flex-row align-items-center ms-auto" data-sm-skip="true">
+                            <li class="nav-item dropdown d-block d-md-none d-lg-block d-xl-block notif m-0">
+                                <a href="notification.html" class="btndrop badge badge-success bg-transparent px-0 mx-2"
+                                    data-status="0" id="btndrop">
+                                    <div class="icon-badge position-relative bg-transparent me-lg-2"> <i
+                                            class="uil uil-bell text-white fs-45"></i>
+                                        <span
+                                            class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger fs-12 countnumbnotif"
+                                            id="countnumbnotif"></span>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- /.container -->
+            </nav>
+        </header>
+        <!-- navbar -->
+    </div>
+    <script src="assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/plugins.js"></script>
+    <script src="assets/plugins/select2/js/select2.min.js"></script>
+    <script src="assets/js/theme.js"></script>
+    <script type="text/javascript">
+        function playSound() {
+            document.getElementById('notificationSound').play();
+        }
+    </script>
+</body>
+<section class="wrapper" style="padding-bottom: 70px !important;">
+    <span class="d-none countnumbnotif2" id="countnumbnotif2"></span>
+    <div class="container py-3" style="z-index: 4; position:relative;">
+        <form id="addActivityFormContributor">
+           
+            <div class="row">
+                <input type="hidden" id="created_by" name="created_by">
+                <div class="col-12">
+                    <div class="mb-3">
+                        <label for="title" class="form-label text-dark">Title<label class="text-danger">*</label></label>
+                        <input type="text" class="form-control" id="title" name="title" required>
+                    </div>
+                </div>
+
+                <div class="custom-select col-12 mb-3">
+                    <label for="location" class="form-label text-dark">Location<label class="text-danger">*</label></label>
+                    <div class="select-box form-select"><div id="selected-locations"></div>
+                    </div>
+                    <div class="options-container">
+                        <input type="text" class="search-box" name="search-box" id="search_box" placeholder="Type location here...">
+                        <div class="options-list"></div>
+                    </div>
+                    <input type="hidden" name="location" id="location">
+                </div>
+                <!-- Input hidden untuk menyimpan ID lokasi yang dipilih (multiple) -->
+               
+            
+
+                <!-- <div class="col-12">
+                    <div class="mb-3">
+                      <label for="location" class="form-label text-dark">Location<label class="text-danger">*</label></label>
+                      <select class="form-control" name="location[]" id="location" multiple="multiple" required></select>
+                    </div>
+                </div> -->
+                <div class="col-6">
+                    <div class="mb-3">
+                        <label for="start_date" class="form-label text-dark">Start Date<label class="text-danger">*</label></label>
+                        <input type="date" class="form-control" id="start_date" name="start_date" required>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="mb-5">
+                        <label for="due_date" class="form-label text-dark">Due Date<label class="text-danger">*</label></label>
+                        <input type="date" class="form-control" id="due_date" name="due_date" required>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="mb-3">
+                        <label for="description" class="form-label text-dark">Description<label class="text-danger">*</label></label>
+                        <textarea class="form-control" name="description" id="description" cols="30" rows="2"></textarea>
+                    </div>
+                </div>
+               
+            </div>
+            <div class="row mt-5 bg-white w-100 border border-2 p-1 justify-content-center" style="position: fixed;bottom: 0px;z-index: 6;">
+                <div class="row w-100">
+                    <div class="col-6">
+                        <a href="activity.html" class="btn btn-warning btn-sm" >Back</a>
+                    </div>
+                    <div class="col-6 text-end">
+                        <button type="submit" class="btn btn-success btn-sm">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+<audio controls id="notificationSound" style="display: none;" preload="auto">
+    <source src="assets/plugins/notifications/sounds/notif.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+</audio>
+<script src="controller/main.js"></script>
+<!-- <script src="controller/activity.js"></script> -->
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const selectBox = document.querySelector(".select-box");
+        const optionsContainer = document.querySelector(".options-container");
+        const optionsList = document.querySelector(".options-list");
+        const searchBox = document.querySelector(".search-box");
+        const hiddenInput = document.getElementById("location");
+        const selectedContainer = document.getElementById("selected-locations");
+
+        let selectedIds = []; // Array untuk menyimpan ID lokasi yang dipilih
+        let selectedNames = []; // Array untuk menyimpan nama lokasi
+
+        // Fetch data lokasi dari server
+        function fetchLocations(searchTerm = "") {
+            fetch(url_endpoint + "/get_data_location?search=" + searchTerm)
+                .then(response => response.json())
+                .then(data => {
+                    optionsList.innerHTML = ""; // Kosongkan sebelum menambahkan opsi baru
+                    data.forEach(item => {
+                        const option = document.createElement("div");
+                        option.classList.add("option");
+                        option.textContent = item.text;
+                        option.setAttribute("data-value", item.id);
+                        
+                        option.addEventListener("click", function () {
+                            const selectedId = this.getAttribute("data-value");
+                            const selectedText = this.textContent;
+
+                            if (!selectedIds.includes(selectedId)) {
+                                selectedIds.push(selectedId);
+                                selectedNames.push(selectedText);
+                                updateSelectedLocations();
+                            }
+                        });
+
+                        optionsList.appendChild(option);
+                    });
+                })
+                .catch(error => console.error("Error fetching locations:", error));
+        }
+
+        // Update tampilan lokasi yang sudah dipilih
+        function updateSelectedLocations() {
+            selectedContainer.innerHTML = ""; // Kosongkan tampilan sebelumnya
+            selectedNames.forEach((name, index) => {
+                const badge = document.createElement("span");
+                badge.classList.add("badge", "bg-primary", "m-1", "p-2");
+                badge.textContent = name;
+
+                // Tombol hapus untuk setiap lokasi yang dipilih
+                const removeBtn = document.createElement("span");
+                removeBtn.textContent = " X";
+                removeBtn.style.cursor = "pointer";
+                removeBtn.addEventListener("click", function () {
+                    selectedIds.splice(index, 1);
+                    selectedNames.splice(index, 1);
+                    updateSelectedLocations();
+                });
+
+                badge.appendChild(removeBtn);
+                selectedContainer.appendChild(badge);
+                searchBox.value = '';
+                optionsContainer.style.display = optionsContainer.style.display === "block" ? "none" : "block";
+                
+            });
+
+            hiddenInput.value = JSON.stringify(selectedIds); // Simpan ID dalam input hidden
+        }
+
+        // Tampilkan atau sembunyikan dropdown
+        selectBox.addEventListener("click", function () {
+            optionsContainer.style.display = optionsContainer.style.display === "block" ? "none" : "block";
+        });
+
+        // Pencarian lokasi
+        searchBox.addEventListener("input", function () {
+       
+            fetchLocations(this.value);
+        });
+
+        // Tutup dropdown jika klik di luar
+        document.addEventListener("click", function (e) {
+            if (!selectBox.contains(e.target) && !optionsContainer.contains(e.target)) {
+                optionsContainer.style.display = "none";
+            }
+        });
+
+        fetchLocations();
+    });
+</script>
+<script>
+    $(document).ready(function() {
+        var userid = localStorage.id;
+        if (userid == null || userid == "undefined") {
+            var base_url = base_urlx();
+            window.location.href = "index.html";
+        }
+        $('#created_by').val(localStorage.id);
+        // $('#location').select2({
+            // ajax: {
+            //     url: url_endpoint + "get_data_location",
+            //     dataType: 'json',
+            //     data: function (params) {
+            //         var query = {
+            //             search: params.term
+            //         }
+            //         return query;
+            //     },
+            //     processResults: function (data) {
+            //         return {
+            //             results: data
+            //         };
+            //     }
+            // }
+        // });
+
+        if ($('#description').length) {
+            // $('#description').summernote({
+            //     toolbar: [
+            //     ['font', ['bold', 'underline', 'clear']],
+            //     ['para', ['ul', 'ol']],
+            //     ]
+            // });
+            tinymce.init({
+                selector: '#description'
+            });
+        }
+
+        $("#addActivityFormContributor").on("submit", function(event) {
+            console.log(document.getElementById('location').value);
+            if(document.getElementById('location').value == ''){
+              
+                toastr.error("Location must be filled");
+                window.scrollTo(0, 0);
+                return false;
+            }else{
+                
+            event.preventDefault();
+            var formData = new FormData(document.querySelector("form#addActivityFormContributor"));
+            $.ajax({
+                type: "POST",
+                url: url_endpoint + 'ajaxAddActivityContributor',
+                data: formData,
+                // data: form,
+                dataType: 'json',
+                contentType: false,
+                processData: false,
+                success: function(data) {
+                    if (data.status == 'success') {
+                        Swal.fire({
+                            title: "Add Activity Success",
+                            text: data.message,
+                            icon: "success"
+                        });
+                        // location.reload();
+                        window.location.href = "activity.html";
+                    } else {
+                        Swal.fire({
+                            title: "Add Activity Failed",
+                            text: data.message,
+                            icon: "error"
+                        });
+                    }
+                }
+            });
+        
+            }
+        });
+    });
+</script>

@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="An impressive and flawless site template that includes various UI elements and countless features, attractive ready-made blocks and rich pages, basically everything you need to create a unique and professional website.">
+    <meta name="keywords"
+        content="bootstrap 5, business, corporate, creative, gulp, marketing, minimal, modern, multipurpose, one page, responsive, saas, sass, seo, startup">
+    <meta name="author" content="elemis">
+    <title> Activity | Simonev</title>
+    <link rel="shortcut icon" href="assets/img/favicon.png">
+    <link rel="stylesheet" href="assets/css/plugins.css">
+    <link href="assets/plugins/select2/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="css/activity.css">
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/plugins/sweetalert/sweetalert2.all.min.js"></script>
+    <link href="assets/plugins/sweetalert/sweetalert2.min.css" rel="stylesheet">
+    <link href="assets/plugins/summernote/summernote.min.css" rel="stylesheet" />
+    <script src="assets/plugins/tinymce/tinymce.min.js"></script>
+    <script src="assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- <script src="assets/js/plugins.js"></script> -->
+    <script src="assets/plugins/select2/js/select2.min.js"></script>
+    <script src="controller/cached_ajax.js"></script>
+    <!-- <script src="assets/js/theme.js"></script> -->
+    <link rel="stylesheet" type="text/css" href="assets/plugins/toastr/toastr.min.css">
+    <script src="assets/plugins/toastr/toastr.min.js"></script>
+    <script src="controller/detail_activity.js"></script>
+</head>
+<style>
+    div:where(.swal2-container) .swal2-html-container {
+        font-size: 0.8rem !important;
+    }
+
+    th,
+    td {
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+    }
+
+    #expdescription2>p {
+        color: #000;
+    }
+</style>
+
+<body>
+    <div style="margin-bottom: 70px;">
+        <!-- navbar -->
+        <header class="wrapper bg-soft-primary">
+            <nav class="navbar navbar-expand-lg classic bg-blue-dark position-absolute navbar-light py-0">
+                <div class="container flex-lg-row flex-nowrap align-items-center shadow-lg mb-0"
+                    style="min-height: 68px;">
+                    <div class="navbar-brand w-100 row py-2">
+                        <a onclick="goBack()" class="text-white d-flex"
+                            style="width:fit-content;font-weight:bold;align-items: center;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor"
+                                class="bi bi-chevron-left" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd"
+                                    d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0" />
+                            </svg>
+                            <span class="ms-2 fs-18">Detail Activity</span>
+                        </a>
+                    </div>
+                    <div class="navbar-collapse offcanvas-nav">
+                        <div class="offcanvas-header d-lg-none d-xl-none">
+                            <a href="">
+                                <div class="row">
+                                    <div class="col-4 p-0">
+                                        <img class="" src="assets/img/favicon.png" srcset="assets/img/favicon.png"
+                                            alt="" />
+                                    </div>
+                                    <div class="col-8 row align-content-center d-none">
+                                        <h1 class="col-12 text-white fw-900 m-0 text-title">Simonev</h1>
+                                    </div>
+                                </div>
+                            </a>
+                            <button type="button" class="btn-close btn-close-white offcanvas-close offcanvas-nav-close"
+                                aria-label="Close"></button>
+                        </div>
+                        <!-- /.navbar-nav -->
+                    </div>
+                    <!-- /.navbar-collapse -->
+                    <div class="navbar-other ms-lg-4">
+                        <ul class="navbar-nav flex-row align-items-center ms-auto" data-sm-skip="true">
+                            <li class="nav-item dropdown d-block d-md-none d-lg-block d-xl-block notif m-0">
+                                <a href="notification.html" class="btndrop badge badge-success bg-transparent px-0 mx-2"
+                                    data-status="0" id="btndrop">
+                                    <div class="icon-badge position-relative bg-transparent me-lg-2">
+                                        <i class="uil uil-bell text-white fs-45"></i>
+                                        <span
+                                            class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger fs-12 countnumbnotif"
+                                            id="countnumbnotif"></span>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- /.container -->
+            </nav>
+        </header>
+        <!-- navbar -->
+    </div>
+    <script src="assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/plugins/summernote/summernote.min.js"></script>
+    <script src="assets/js/plugins.js"></script>
+    <script src="assets/plugins/select2/js/select2.min.js"></script>
+    <script src="assets/js/theme.js"></script>
+    <script type="text/javascript">
+        function playSound() {
+            document.getElementById('notificationSound').play();
+        }
+    </script>
+    <script src="cordova.js"></script>
+    <script>
+        document.addEventListener("deviceready", function () {
+            console.log("Device Ready Detail Activity");
+            document.addEventListener("offline", onOffline, false);
+            document.addEventListener("online", onOnline, false);
+
+
+            function formDataToString(formData) {
+                const params = new URLSearchParams();
+                for (const [key, value] of formData.entries()) {
+                    params.append(key, value);
+                }
+                return params.toString();
+            }
+
+            function onOffline() {
+                $("#noConnAlert").removeClass("d-none");
+                console.log("Offline");
+
+            }
+
+            function onOnline() {
+                $("#noConnAlert").addClass("d-none");
+                console.log("Online");
+                const userId = localStorage.getItem("id");
+                const subacId = localStorage.getItem("id_subac_detail");
+                var localReports = localStorage.getItem("offlineReports_" + subacId + "_" + userId);
+                localReports = JSON.parse(localReports);
+                console.log("localReports: ", "offlineReports_" + subacId + "_" + userId);
+                if (localReports) {
+                    for (let i = 0; i < localReports.length; i++) {
+                        const formData = new FormData();
+                        let ofReport = localReports[i]["data"];
+                        for (const key in ofReport) {
+                            if (ofReport.hasOwnProperty(key)) {
+                                formData.append(key, ofReport[key]);
+                            }
+                        }
+                        console.log("Sending report: ", ofReport['title']);
+                        $.ajax({
+                            type: "POST",
+                            url: localReports[i]["url"],
+                            data: formData,
+                            dataType: "json",
+                            contentType: false,
+                            processData: false,
+                            success: function (data) {
+                                if (data.status == "success") {
+                                    toastr.success("Report has been saved");
+                                    localReports.splice(i, 1);
+                                    localStorage.setItem("offlineReports_" + subacId + "_" + userId, JSON.stringify(localReports));
+                                    $(`#or-${localReports[i]['timestamp']}`).remove();
+
+                                } else {
+                                    Swal.fire({
+                                        title: "Add Report Failed",
+                                        text: "Failed to add report, please try again later",
+                                        icon: "error",
+                                    });
+                                }
+                            },
+                        });
+                    }
+
+                }
+            }
+        }, false);
+    </script>
+</body>
+<section class="wrapper" style="padding-bottom: 100px !important;">
+    <span class="d-none countnumbnotif2" id="countnumbnotif2"></span>
+    <div class="container p-3" style="z-index: 4; position:relative;">
+        <div class="alert alert-danger-2 d-none" role="alert" id="noConnAlert">
+            You are using offline mode, please check your internet connection.
+        </div>
+        <div class="row mb-5" id="list_activity">
+
+        </div>
+        <div class="row mb-5">
+            <div class="col-12 p-0">
+                <div class="card shadow shadow-lg">
+                    <div class="card-body pt-3 pb-3 ">
+                        <div class=" row">
+                            <h6 class="ps-0 text-ilo-dark-blue">Beneficiary </h6>
+                            <hr class="m-0 mb-2" />
+                            <div class="col-4 px-0 mb-3 text-center" style="border-right: 1px solid #0004;">
+                                <span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                        class="bi bi-gender-male text-primary" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd"
+                                            d="M9.5 2a.5.5 0 0 1 0-1h5a.5.5 0 0 1 .5.5v5a.5.5 0 0 1-1 0V2.707L9.871 6.836a5 5 0 1 1-.707-.707L13.293 2zM6 6a4 4 0 1 0 0 8 4 4 0 0 0 0-8" />
+                                    </svg><b class="ms-1">Male: </b></span>
+                                <div class="col-12 text-center fs-20" id="totmale">
+                                </div>
+                            </div>
+                            <div class="col-4 px-0 mb-3 text-center" style="border-right: 1px solid #0004;">
+                                <span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                        class="bi bi-gender-female text-danger" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd"
+                                            d="M8 1a4 4 0 1 0 0 8 4 4 0 0 0 0-8M3 5a5 5 0 1 1 5.5 4.975V12h2a.5.5 0 0 1 0 1h-2v2.5a.5.5 0 0 1-1 0V13h-2a.5.5 0 0 1 0-1h2V9.975A5 5 0 0 1 3 5" />
+                                    </svg> <b class="m-0">Female: </b> </span>
+
+                                <div class="col-12 text-center fs-20" id="totfemale">
+                                </div>
+                            </div>
+                            <div class="col-4 px-0 mb-3 text-center">
+
+                                <p class=" w-100 m-0"><b class="ms-1 w-100">Total: </b> </p>
+                                <div class="col-12 fs-20" id="totalg">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-5">
+            <div class="col-12 p-0">
+                <div class="card border shadow shadow-lg">
+                    <h6 class="card-header text-ilo-dark-blue pb-0 ps-5 pe-5 text-title"
+                        style="border:none !important;">
+                        <b><b>Activity Report</b></b>
+                        <hr class="mt-2 mb-2">
+                    </h6>
+                    <div class="card-body pt-0">
+                        <div class="row">
+                            <!-- <p class="mb-0 p-0"><b class="text-ilo-dark-blue">Descriptions:</b></p> -->
+                            <div class="col-12 px-0">
+                                <div class="table-responsive">
+                                    <table class="table fs-12">
+                                        <thead style="background-color: rgba(220,220,220, 0.1);">
+                                            <tr>
+                                                <th scope="col" style="white-space: nowrap;">Report Title</th>
+                                                <th scope="col" style="white-space: nowrap;">Achievment</th>
+                                                <th scope="col" style="white-space: nowrap;">Details</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="list_report">
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 px-0">
+                                <a class="btn btn-danger w-100 mt-0 btn-sm" href="activity_report_add.html">+ Add
+                                    Report</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-5">
+            <div class="col-12 p-0">
+                <div class="card border shadow shadow-lg">
+                    <div class="d-flex w-100 justify-content-between align-items-center px-2">
+                        <h6 class="card-header text-ilo-dark-blue pb-0 ps-5 pe-5 text-title"
+                            style="border:none !important;">
+                            <b><b>Pending Activity Report</b></b>
+                            <hr class="mt-2 mb-2">
+                        </h6>
+                        <button class="btn btn-sm btn-danger p-2 pt-1 pb-1" onclick="clearOfflineReport()">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-trash" viewBox="0 0 16 16">
+                                <path
+                                    d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                                <path
+                                    d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="card-body pt-0">
+                        <div class="row">
+                            <!-- <p class="mb-0 p-0"><b class="text-ilo-dark-blue">Descriptions:</b></p> -->
+                            <div class="col-12 px-0">
+                                <div class="table-responsive">
+                                    <table class="table fs-12">
+                                        <thead style="background-color: rgba(220,220,220, 0.1);">
+                                            <tr>
+                                                <th scope="col" style="white-space: nowrap;">Report Title</th>
+                                                <th scope="col" style="white-space: nowrap;">Achievment</th>
+                                                <!-- <th scope="col" style="white-space: nowrap;">Details</th> -->
+                                            </tr>
+                                        </thead>
+                                        <tbody id="pending_list_report">
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-5" id="acEndBudget" style="display: none;">
+            <div class="col-12 p-0">
+                <div class="card border shadow shadow-lg">
+                    <h6 class="card-header text-ilo-dark-blue pb-0 ps-5 pe-5 text-title"
+                        style="border:none !important;">
+                        <b><b>Activity Expenditure Budget</b></b>
+                        <hr class="mt-2 mb-2">
+                    </h6>
+                    <div class="card-body pt-0">
+                        <div class="row">
+                            <!-- <p class="mb-0 p-0"><b class="text-ilo-dark-blue">Descriptions:</b></p> -->
+                            <div class="col-12 px-0">
+                                <div class="table-responsive">
+                                    <table class="table fs-12">
+                                        <thead style="background-color: rgba(220,220,220, 0.1);">
+                                            <tr>
+                                                <th scope="col" style="white-space: nowrap;">Title</th>
+                                                <th scope="col" style="white-space: nowrap;">Status</th>
+                                                <th scope="col" style="white-space: nowrap;">Details</th>
+                                                <th scope="col" style="white-space: nowrap;">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="list_expenditure">
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 px-0">
+                                <!-- <button class="btn btn-danger w-100 mt-0 btn-sm" onclick="showExpenditure('')">+ Add Expenditure Budget</button> -->
+                                <a class="btn btn-danger w-100 mt-0 btn-sm" href="expenditure_budget_insert.html">+ Add
+                                    Expenditure Budget</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-5">
+            <div class="col-12 p-0">
+                <div class="card border shadow shadow-lg">
+                    <h6 class="card-header text-ilo-dark-blue ps-5 pe-5">
+                        <b><b>Gallery</b></b>
+                    </h6>
+                    <div class="card-body pt-0 ps-5 pe-5">
+                        <div class="row mt-3" id="list_gallery">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-5">
+            <div class="col-12 p-0">
+                <div class="card border shadow shadow-lg">
+                    <h6 class="card-header text-ilo-dark-blue ps-5 pe-5">
+                        <b><b>Comment</b></b>
+                    </h6>
+                    <div class="card-body pt-0 pb-1 ps-5 pe-5" id="allcomment">
+
+                    </div>
+
+                    <div class="card-body p-5 ps-5 pe-5 ">
+                        <form id="form_comment">
+                            <div class="row">
+                                <div class="col-2 d-flex justify-content-center">
+                                    <img style="border-radius: 50%;" id="ava" src="" alt="" width="40" height="40">
+                                </div>
+                                <div class="col-8 p-0">
+                                    <textarea class="form-control" name="comment" id="comment" cols="30" rows="3"
+                                        required></textarea>
+                                </div>
+                                <div class="col-2">
+                                    <!-- <button type="submit" class="btn btn-sm btn-ilo-dark-blue p-2 pt-1 pb-1" id="bsubmit"> -->
+                                    <button type="button" class="btn btn-sm btn-ilo-dark-blue p-2 pt-1 pb-1"
+                                        onclick="sendcomment()" id="bsubmit">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                            fill="currentColor" class="bi bi-send-fill" viewBox="0 0 16 16">
+                                            <path
+                                                d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471z" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<audio controls id="notificationSound" style="display: none;" preload="auto">
+    <source src="assets/plugins/notifications/sounds/notif.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+</audio>
+<footer class="text-inverse mt-0 bg-white text-black"
+    style="z-index: 100; position: fixed; bottom: 0; width: 100%;border-top-left-radius:24px !important;  border-top-right-radius:24px !important; box-shadow: 0rem 0rem 0.8rem rgba(30, 34, 40, 0.1) !important;">
+    <div class=" container py-2 py-md-2 px-1">
+        <div class="row gy-6 gy-lg-0">
+            <div class="col-3 p-0 text-center ">
+                <a href="activity.html" class="text-active">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                        class="bi bi-card-checklist" viewBox="0 0 16 16">
+                        <path
+                            d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2z" />
+                        <path
+                            d="M7 5.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m-1.496-.854a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 1 1 .708-.708l.146.147 1.146-1.147a.5.5 0 0 1 .708 0M7 9.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m-1.496-.854a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 0 1 .708-.708l.146.147 1.146-1.147a.5.5 0 0 1 .708 0" />
+                    </svg><br />
+                    <span class="fs-12"><b>Activities</b></span>
+                </a>
+            </div>
+            <div class="col-3 p-0 text-center ">
+                <a href="report.html" class="text-inactive">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                        class="bi bi-file-earmark-text-fill" viewBox="0 0 16 16">
+                        <path
+                            d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1M4.5 9a.5.5 0 0 1 0-1h7a.5.5 0 0 1 0 1zM4 10.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m.5 2.5a.5.5 0 0 1 0-1h4a.5.5 0 0 1 0 1z" />
+                    </svg><br />
+                    <span class="fs-12"><b>Report Initiative</b></span>
+                </a>
+            </div>
+            <div class="col-3 p-0 text-center ">
+                <a href="pres_release.html" class="text-inactive">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                        class="bi bi-newspaper" viewBox="0 0 16 16">
+                        <path
+                            d="M0 2.5A1.5 1.5 0 0 1 1.5 1h11A1.5 1.5 0 0 1 14 2.5v10.528c0 .3-.05.654-.238.972h.738a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 1 1 0v9a1.5 1.5 0 0 1-1.5 1.5H1.497A1.497 1.497 0 0 1 0 13.5zM12 14c.37 0 .654-.211.853-.441.092-.106.147-.279.147-.531V2.5a.5.5 0 0 0-.5-.5h-11a.5.5 0 0 0-.5.5v11c0 .278.223.5.497.5z" />
+                        <path
+                            d="M2 3h10v2H2zm0 3h4v3H2zm0 4h4v1H2zm0 2h4v1H2zm5-6h2v1H7zm3 0h2v1h-2zM7 8h2v1H7zm3 0h2v1h-2zm-3 2h2v1H7zm3 0h2v1h-2zm-3 2h2v1H7zm3 0h2v1h-2z" />
+                    </svg><br />
+                    <span class="fs-12"><b>Pres Release</b></span>
+                </a>
+            </div>
+            <div class="col-3 p-0 text-center " style="padding-right: 20px !important;">
+                <a href="settings.html" class="text-inactive">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                        class="bi bi-gear-fill" viewBox="0 0 16 16">
+                        <path
+                            d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z" />
+                    </svg><br />
+                    <span class="fs-12"><b>Settings</b></span>
+                </a>
+            </div>
+        </div>
+    </div>
+</footer>
+<div class="modal fade" id="addActivityReportModal" aria-labelledby="addActivityReportModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered m-0">
+        <div class="modal-content">
+            <div class="modal-header bg-white w-100 border border-2" style="position: fixed;top: 0px;z-index: 6;">
+                <h5 class="modal-title" id="addActivityReportModalLabel">Add Activity Report</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="add_report_form" method="POST" enctype="multipart/form-data">
+                <input type="hidden" id="sact_id" name="sact_id">
+                <input type="hidden" id="createdBy" name="createdBy">
+                <div class="modal-body p-5 pt-15 pb-12 ">
+
+                    <div class="row" id="addactivity" style="display: flex;">
+                        <div class="mb-3">
+                            <label for="title" class="form-label fw-bold text-dark">Title<span
+                                    class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="title" name="title" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="description" class="form-label fw-bold text-dark">Description<span
+                                    class="text-danger">*</span></label>
+                            <textarea type="text" class="form-control" id="description" name="description"
+                                row="10"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="location" class="form-label fw-bold text-dark">Location<span
+                                    class="text-danger">*</span></label>
+                            <select class="form-select form-select" id="location" name="location" required>
+                                <option selected value="" disabled>Select location</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="date" class="form-label fw-bold text-dark">Date<span
+                                    class="text-danger">*</span></label>
+                            <input type="date" class="form-control" id="date" name="date" value="" required>
+                        </div>
+                        <div class="mb-3">
+
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="row">
+                                        <div class="col-7 d-flex justify-content-start">
+                                            <select id="milestone_id"
+                                                class="form-select form-select milestone_dropdown"></select>
+                                        </div>
+                                        <div class="col-5 d-flex justify-content-end" id="btn-add-milestone">
+
+                                        </div>
+                                    </div>
+                                    <div class="row mt-1">
+                                        <div class="col-12 px-0">
+                                            <table>
+                                                <thead>
+                                                    <tr class="row justify-content-between">
+                                                        <th class="text-dark col-7 ps-5"
+                                                            style="vertical-align:top !important;">
+                                                            <!-- Achievement</th> -->
+                                                        <th class="text-dark col-4 ps-0 text-start"
+                                                            style="vertical-align:top !important;">
+                                                        </th>
+                                                        <!-- <th class="text-dark" style="vertical-align:top !important;">Action</th> -->
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="milestone_field">
+                                                    <!-- <tr id="milestone_1">
+                                                        <td colspan="2">
+                                                            <div class="row d-flex justify-content-between">
+                                                                <div class="col-5">
+                                                                    <input type="number" min="0" class="form-control achievement_add_report" value="0" name="achievment[]">
+                                                                </div>
+                                                                <div class="col-7">
+                                                                    
+                                                                </div>
+                                                                <div class="col-12">
+                                                                    <button type="button" id="btn-del-milestone" class="btn btn-danger btn-sm w-100 my-2" onclick="del_milestone_field(1)">Delete Up Row</button>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr> -->
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label for="date" class="form-label fw-bold text-dark">Beneficiary<span
+                                        class="text-danger">*</span></label>
+                                <div class="col-6">
+                                    <label>Male</label>
+                                    <input type="number" min="0" class="form-control achievement_add_report" value="0"
+                                        required name="achievment_male[]"
+                                        onkeyup="if(this.value === '') this.value = '0';">
+                                </div>
+                                <div class="col-6">
+                                    <label>Female</label>
+                                    <input type="number" min="0" class="form-control achievement_add_report" value="0"
+                                        required name="achievment_female[]"
+                                        onkeyup="if(this.value === '') this.value = '0';">
+                                </div>
+                                <small class="text-danger"><b>If irelevant please input empty</b></small>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="row">
+                                <div class="col-12 d-flex justify-content-start">
+                                    <label class="form-label fw-bold text-dark mb-0">Attachment<span
+                                            class="text-danger">*</span></label>
+                                </div>
+                                <div class="col-12" id="">
+                                    <table>
+                                        <tbody id="attachment_field">
+                                            <!-- <tr id="attachment_1">
+                                                <td colspan="2">
+                                                    <div class="row d-flex justify-content-between">
+                                                        <div class="col-10 ps-0">
+                                                            <input type="file" class="form-control" name="attachment[]" accept="image/*, application/pdf">
+                                                        </div>
+                                                        <div class="col-2 ps-0">
+                                                            <button type="button" class="btn btn-danger btn-sm w-100 my-2 px-1" onclick="del_attachment_field(1)">-</button>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr> -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-12 d-flex mt-2 justify-content-end">
+                                    <button type="button" class="btn btn-primary btn-sm w-100"
+                                        onclick="add_attachment()">Add Attachment</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer bg-white w-100 border border-2 p-1"
+                    style="position: fixed;bottom: 0px;z-index: 6;display: flex;justify-content: space-between;">
+                    <button type="button" class="btn btn-sm btn-warning" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-sm btn-success">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="ActivityExpenditureModal" aria-labelledby="ActivityExpenditureModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered m-0 modal-fullscreen">
+        <div class="modal-content">
+            <div class="modal-header bg-white w-100 border border-2" style="position: fixed;top: 0px;z-index: 6;">
+                <h5 class="modal-title" id="ActivityExpenditureModalLabel"> Activity Expenditure Budget</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="add_expenditure_form" method="POST" enctype="multipart/form-data">
+                <input type="hidden" id="expsact_id" name="expsact_id">
+                <input type="hidden" id="expcreatedBy" name="expcreatedBy">
+                <div class="modal-body p-5 pt-15 pb-12 ">
+
+                    <div class="row" id="addactivity" style="display: flex;">
+                        <div class="row mb-3" id="expuser" style="display: none;">
+                            <div class="col-4 rounded">
+                                <img id="expphoto" src="" alt="" width="80px">
+                            </div>
+
+                            <label class="col-8 row">
+                                <b id="expname" class="col-12"></b>
+                                <div id="expstatus" class="col-12"></div>
+                            </label>
+                        </div>
+                        <div class="mb-3">
+                            <label for="exptitle" class="form-label fw-bold text-dark">Title:</label>
+                            <input type="text" class="form-control" id="exptitle" name="exptitle" required>
+                        </div>
+                        <div class="col-6">
+                            <div class="mb-3">
+                                <label for="type_currency" class="col-form-label text-dark">Type Currency</label>
+                                <select name="type_currency" id="type_currency" class="form-select" data-id="expbudget"
+                                    onchange="open_budget(this)">
+                                    <option selected disabled>Select type currency</option>
+                                    <option value="dollar">USD ($)</option>
+                                    <option value="rupiah">IDR (Rp)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="mb-3">
+                                <label for="expbudget" class="col-form-label text-dark">Budget</label>
+                                <input type="number" class="form-control bg-white" id="expbudget" disabled
+                                    data-id='expenditure_area' data-main="0" name="budget" required>
+                            </div>
+                        </div>
+                        <div class="mb-3 col-12">
+                            <label for="expdate" class="form-label fw-bold text-dark">Date:</label>
+                            <input type="date" class="form-control" id="expdate" name="expdate" value="" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="activity_expenditure_description"
+                                class="col-form-label text-dark">Description</label>
+                            <textarea class="form-control" name="description" id="activity_expenditure_description"
+                                cols="30" rows="10" style="display: none;"></textarea>
+                            <div class="border p-3 rounded border-primary form-control" id="expdescription2"
+                                style="display: none;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer bg-white w-100 border border-2 p-1"
+                    style="position: fixed;bottom: 0px;z-index: 6;display: flex;justify-content: space-between;">
+                    <button type="button" class="btn btn-sm btn-warning" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-sm btn-success" style="display: none;" id="expsubmit"
+                        onclick="submitexp()">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="gallery" tabindex="-1" aria-labelledby="galleryLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body p-0 mx-auto">
+                <button type="button" class="close btn btn-close" data-bs-dismiss="modal" aria-label="Close"
+                    style="position: absolute;right: 2px;top: 2px;">
+                </button>
+                <img class="img-fluid" src="" id="showgallery" alt="">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="revisionActivityBudgetExpansive" tabindex="-1"
+    aria-labelledby="revisionActivityBudgetExpansive" aria-hidden="true">
+    <div class="modal-dialog modal-lg m-0">
+        <div class="modal-content">
+            <div class="modal-header bg-white w-100 border border-2" style="position: fixed;top: 0px;z-index: 6;">
+                <h5 class="modal-title" id="ActivityExpenditureModalLabel">Revision Activity Expenditure Budget</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="revision_report_form" method="POST" enctype="multipart/form-data">
+                <div class="modal-body p-5 pt-15 pb-12 ">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="mb-3">
+                                <label for="note_area" class="col-form-label text-dark">Notes from admin</label>
+                                <!-- <textarea class="form-control" name="description" id="activity_expenditure_description_detail" cols="30" rows="10"></textarea> -->
+                                <div class="card" style="border:1px solid rgba(0,0,0,.125); box-shadow: unset">
+                                    <div class="card-body" id="note_area"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="mb-3">
+                                <label for="activity_expenditure_title_revision"
+                                    class="col-form-label text-dark">Title</label>
+                                <input type="hidden" class="form-control bg-white" id="activity_expenditure_id_revision"
+                                    name="id" required>
+                                <input type="hidden" class="form-control bg-white"
+                                    id="activity_expenditure_sact_id_revision" name="sact_id" required>
+                                <input type="text" class="form-control bg-white"
+                                    id="activity_expenditure_title_revision" name="title" required>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="mb-3">
+                                <label for="activity_expenditure_budget" class="col-form-label text-dark">Type
+                                    Currency</label>
+                                <select name="type_currency" id="type_currency_revision" class="form-select"
+                                    data-id="activity_expenditure_budget_revision" onchange="open_budget(this)">
+                                    <option selected disabled>Select type currency</option>
+                                    <option value="dollar">USD ($)</option>
+                                    <option value="rupiah">IDR (Rp)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="mb-3">
+                                <label for="activity_expenditure_budget_revision"
+                                    class="col-form-label text-dark">Budget</label>
+                                <input type="number" class="form-control bg-white"
+                                    id="activity_expenditure_budget_revision" disabled
+                                    data-id='expenditure_area_revision' data-main="0" name="budget" required>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="mb-3">
+                                <label for="activity_expenditure_date_revision"
+                                    class="col-form-label text-dark">Date</label>
+                                <input type="date" class="form-control bg-white" id="activity_expenditure_date_revision"
+                                    name="date" value="" required>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="mb-3">
+                                <label for="activity_expenditure_description_revision"
+                                    class="col-form-label text-dark">Description</label>
+                                <textarea class="form-control" name="description"
+                                    id="activity_expenditure_description_revision" cols="30" rows="10"></textarea>
+                                <!-- <div class="card" style="border:1px solid rgba(0,0,0,.125); box-shadow: unset">
+                                    <div class="card-body" id="activity_expenditure_description_revision">
+
+                                    </div>
+                                 </div> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer bg-white w-100 border border-2 p-1"
+                    style="position: fixed;bottom: 0px;z-index: 6;display: flex;justify-content: space-between;">
+                    <button type="button" class="btn btn-sm btn-warning" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-sm btn-success" id="expsubmitrevision"
+                        onclick="submitexprevision()">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="controller/main.js"></script>
+<!-- <script src="controller/detail_activity.js"></script> -->

@@ -1,0 +1,381 @@
+button.hamburger:before,
+
+button.hamburger span,
+
+button.hamburger:after {
+
+    background-color: #000 !important;
+
+}
+
+
+
+.notif>.dropdown-toggle::after {
+
+    display: none;
+
+}
+
+
+
+.navbar-nav .nav-item a hr {
+
+    display: none;
+
+}
+
+
+
+@media screen and (min-width: 700px) {
+
+
+
+    .navbar-nav .nav-item .active {
+
+        display: flex;
+
+        flex-wrap: wrap !important;
+
+        justify-content: center !important;
+
+    }
+
+
+
+    .navbar-nav .nav-item .active hr {
+
+        display: block;
+
+        color: rgba(255, 0, 0, 1);
+
+        background-color: currentColor;
+
+        border: 2px solid;
+
+        opacity: 1;
+
+        width: 85%;
+
+    }
+
+}
+
+.text-active {
+
+    color: #fa3c4b !important;
+
+}
+
+
+.text-inactive {
+
+    color: #1E2DBE !important;
+
+}
+
+
+.steps {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 2rem;
+
+    position: relative;
+
+}
+
+
+
+.step-button {
+
+    width: 50px;
+
+    height: 50px;
+
+    border-radius: 50%;
+
+    border: none;
+
+    background-color: var(--prm-gray);
+
+    transition: .4s;
+
+}
+
+
+
+.step-button[aria-expanded="true"] {
+
+    width: 60px;
+
+    height: 60px;
+
+    background-color: var(--prm-color);
+
+    color: #fff;
+
+}
+
+
+
+.done {
+
+    background-color: var(--prm-color);
+
+    color: #fff;
+
+}
+
+
+
+.step-item {
+
+    z-index: 10;
+
+    text-align: center;
+
+}
+
+
+
+#progress {
+
+    -webkit-appearance: none;
+
+    position: absolute;
+
+    width: 95%;
+
+    z-index: 5;
+
+    height: 10px;
+
+    margin-left: 18px;
+
+    margin-bottom: 18px;
+
+}
+
+
+
+/* to customize progress bar */
+
+#progress::-webkit-progress-value {
+
+    background-color: var(--prm-color);
+
+    transition: .5s ease;
+
+}
+
+
+
+#progress::-webkit-progress-bar {
+
+    background-color: var(--prm-gray);
+
+}
+
+
+
+.select2 {
+
+    width: 100% !important;
+
+}
+
+
+
+.select2-container--default .select2-selection--single {
+
+    background-color: #fff;
+
+    border: 1px solid #1E2DBE;
+
+    border-radius: 0.4rem;
+
+}
+
+
+
+.select2-container .select2-selection--single {
+
+    box-sizing: border-box;
+
+    cursor: pointer;
+
+    display: block;
+
+    height: 100%;
+
+    user-select: none;
+
+    -webkit-user-select: none;
+
+    padding: 0.4rem 0.6rem;
+
+    width: 100%;
+
+}
+
+
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+
+    width: 30px;
+
+    top: 13px;
+
+    right: 10px
+}
+
+
+
+.owl-dots {
+
+    display: flex !important;
+
+    justify-content: center !important;
+
+    margin-top: 1rem !important;
+
+}
+
+
+
+
+
+.owl-dots .active span {
+
+    opacity: 1;
+
+    border-color: #fa3c4b !important;
+
+    background-color: #fff !important;
+
+}
+
+
+
+.owl-carousel .owl-dots .owl-dot span {
+
+    opacity: 1;
+
+    border-color: #fff;
+
+    background-color: #fff;
+
+}
+
+
+
+#button-addon2 {
+
+    padding: 5px 15px;
+
+    border-radius: 0px 5px 5px 0px !important;
+
+}
+
+
+
+
+
+.btn-transparent {
+
+    color: #1E2DBE;
+
+    background-color: transparent;
+
+    border-color: #1E2DBE;
+
+}
+
+
+
+.btn-transparent:hover {
+
+    color: #1E2DBE !important;
+
+}
+
+
+
+.btn-outline-blue {
+
+    border: 1px solid rgb(40 158 249) !important;
+
+}
+
+
+
+.select2-selection__choice__display {
+
+    color: #000;
+
+}
+
+
+
+.detail>p {
+
+    white-space: normal !important;
+
+    word-wrap: break-word !important;
+
+    width: 100% !important;
+
+}
+
+
+
+.fileclass {
+
+    max-width: 25%;
+
+    /* Set the maximum width to the container width */
+
+    height: auto;
+
+    /* Allow the height to adjust proportionally */
+
+    display: block;
+
+    /* Ensure images are block-level elements */
+
+    margin-bottom: 10px;
+
+    /* Optional: Add some spacing between thumbnails */
+
+}
+
+.owl-carousel {
+
+    display: flex;
+
+    width: 100%;
+
+    z-index: 1;
+
+}
+
+.toast-success {
+
+    background-color: #51A351;
+
+}
+
+.toast-error {
+
+    background-color: #BD362F !important;
+
+}
+
+.button-addon2 {
+    padding: 5px 15px;
+    border-radius: 0px 5px 5px 0px !important;
+}

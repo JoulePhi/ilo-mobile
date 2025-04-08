@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="An impressive and flawless site template that includes various UI elements and countless features, attractive ready-made blocks and rich pages, basically everything you need to create a unique and professional website.">
+    <meta name="keywords"
+        content="bootstrap 5, business, corporate, creative, gulp, marketing, minimal, modern, multipurpose, one page, responsive, saas, sass, seo, startup">
+    <meta name="author" content="elemis">
+    <title> Login | Simonev</title>
+    <link rel="shortcut icon" href="assets/img/favicon.png">
+    <link rel="stylesheet" type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <link rel="stylesheet" href="assets/css/plugins.css">
+    <link href="assets/plugins/select2/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="css/login.css">
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/plugins/sweetalert/sweetalert2.all.min.js"></script>
+    <link href="assets/plugins/sweetalert/sweetalert2.min.css" rel="stylesheet">
+    <!-- <script src="https://cdn.tiny.cloud/1/vkxv3rgwoxa0omikpah5pvaaf4qt4zeg0mx6nvngms5k9ya3/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script> -->
+    <script src="assets/plugins/tinymce/tinymce.min.js"></script>
+    <script src="assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- <script src="assets/js/plugins.js"></script> -->
+    <script src="assets/plugins/select2/js/select2.min.js"></script>
+    <!-- <script src="assets/js/theme.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="controller/main.js"></script>
+</head>
+<section class="" style="background-color: #1E2DBE !important;">
+    <div class="row h-100 w-100 p-0 m-0" style="position: absolute;">
+        <!-- /column -->
+        <div class="col-xl-12 mx-auto p-0">
+            <div class="card rounded-0 h-100" style="background-color: #1E2DBE !important;">
+                <div class="row gx-0 my-auto">
+                    <div class="col-lg-12">
+                        <div class="p-5 p-md-9 p-lg-12 pt-lg-6">
+                            <div class="col-md-12 my-8 text-center">
+                                <img class="m-0" src="assets/img/logowhite.png" alt="" width="180" />
+                            </div>
+                            <form class="" method="post" action="" id="myForm">
+                                <div class="row gx-4 justify-content-center">
+                                    <div class="col-md-12 mb-3">
+                                        <div class="form-group mb-2">
+                                            <label class="fw-bold mb-2 text-normal text-white" for="email">Email<label
+                                                    class="text-danger">*</label></label>
+                                            <input id="email" type="email" name="email"
+                                                class="form-control text-normal text-white" placeholder="Email" required
+                                                value="">
+                                        </div>
+                                    </div>
+                                    <!-- /column -->
+                                    <div class="col-md-12">
+                                        <div class="form-group mb-2">
+                                            <label class="fw-bold text-normal text-white mb-2" for="password">Password
+                                                <label class="text-danger">*</label>
+                                            </label>
+                                            <div class="input-group mb-2">
+                                                <input id="password" type="password" name="password"
+                                                    class="form-control text-normal text-white" placeholder="Password"
+                                                    aria-bs-describedby="button-addon2" required>
+                                                <button class="btn fs-24 rounded border-1 pt-1 pb-1" type="button"
+                                                    id="button-addon2"
+                                                    style="border-top-left-radius: 0px !important; border-bottom-left-radius: 0px !important; background-color: white; color: #1E2DBE;border-color: white;vertical-align: top;"
+                                                    onclick="seepass(this)" data-id="password" data-icon="eye"><i
+                                                        class="uil uil-eye mb-2" id="eye"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 text-start text-bluegarteks text-normal text-white">
+                                        Don't have an account? <a href="register.html"
+                                            class="text-bluegarteks text-normal text-white"><b>Register</b></a>
+                                    </div>
+                                    <div class="col-12 text-start mb-2 text-bluegarteks text-normal text-white">
+                                        Forgot your password? <a href="forget_password.html"
+                                            class="text-bluegarteks text-normal text-white"><b>Reset Password</b></a>
+                                    </div>
+                                    <!-- /column -->
+                                    <div class="col-12 text-center">
+                                        <!-- <button type="button" class="btn btn-danger btn-md mb-1 w-100 text-normal text-white" onclick="login()">
+                                            Login
+                                        </button> -->
+                                        <button type="button" class="btn btn-danger mb-1 w-100"
+                                            onclick="login()">Login</button>
+                                    </div>
+                                    <!-- /column -->
+                                </div>
+                                <!-- /.row -->
+                            </form>
+                            <!-- /form -->
+                            <!--/div -->
+                        </div>
+                        <!--/div -->
+                    </div>
+                    <!--/column -->
+                </div>
+                <!--/.row -->
+            </div>
+            <!-- /.card -->
+        </div>
+        <!-- /column -->
+    </div>
+    <!-- /.row -->
+</section>
+
+</html>
+<script src="cordova.js"></script>
+<script>
+    document.addEventListener("deviceready", function () {
+        console.log("Device Ready");
+        document.addEventListener("offline", onOffline, false);
+        function onOffline() {
+            console.log("Offline");
+            window.location.href = "no_connection.html";
+        }
+
+    }, false);
+</script>
+<script src="controller/login.js"></script>
+<script>
+    function reg() {
+        Swal.fire({
+            text: "Sudah terdaftar sebagai anggota serikat?",
+            showCancelButton: false,
+            showDenyButton: true,
+            showCloseButton: true,
+            confirmButtonColor: '#1e93dd',
+            denyButtonColor: '#FF0000',
+            confirmButtonText: 'Sudah',
+            denyButtonText: 'Belum',
+        }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            var urlx = window.location.href;
+            var urlParts = urlx.split('/');
+            // for (var i = 0; i < urlParts.length; i++){
+            //     if (urlParts[i] == "garteks"){
+            //     }
+            // }
+            var base_url = base_urlx();
+            // console.log(base_url);
+            // return false;
+            if (result.isConfirmed) {
+                var location = 'register_union.html';
+                // console.log(location);
+                window.location.href = location;
+                // return false;
+            } else if (result.isDenied) {
+                var location = 'register.html';
+                window.location.href = location;
+                // return false;
+            }
+        });
+    }
+
+    function seepass(t) {
+        var id = t.getAttribute('data-id');
+        var icon = t.getAttribute('data-icon');
+        let element = document.getElementById(id);
+        let element_icon = document.getElementById(icon);
+        if (element.type == "password") {
+            element.type = "text";
+            element_icon.classList.remove('uil-eye');
+            element_icon.classList.add('uil-eye-slash');
+        } else {
+            element.type = "password";
+            element_icon.classList.add('uil-eye');
+            element_icon.classList.remove('uil-eye-slash');
+        }
+    }
+    function send() {
+        var requiredInputs = document.querySelectorAll("input[required], textarea[required], select[required]");
+        var emptyInputs = 0;
+        requiredInputs.forEach(function (elem) {
+            var value = elem.value.trim();
+            if (value === "" || value === "0") {
+                emptyInputs++;
+                console.log(emptyInputs);
+            }
+        });
+        var email = document.getElementById('email').value;
+        var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        var validemail = emailRegex.test(email);
+        if (validemail === false) {
+            Swal.fire({
+                title: 'Oops!',
+                text: 'Email kosong atau tidak valid',
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            });
+            return false;
+        } else if (emptyInputs > 0) {
+            Swal.fire({
+                title: 'Oops!',
+                text: 'Isi Semua Kolom',
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            });
+            return false;
+        } else {
+            setTimeout(() => {
+                Swal.showLoading();
+            }, 2000);
+            setTimeout(() => {
+                document.getElementById("myForm").submit();
+            }, 3000);
+        }
+    }
+</script>

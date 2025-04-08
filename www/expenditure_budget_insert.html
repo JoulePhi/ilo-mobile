@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="An impressive and flawless site template that includes various UI elements and countless features, attractive ready-made blocks and rich pages, basically everything you need to create a unique and professional website.">
+    <meta name="keywords" content="bootstrap 5, business, corporate, creative, gulp, marketing, minimal, modern, multipurpose, one page, responsive, saas, sass, seo, startup">
+    <meta name="author" content="elemis">
+    <title> Activity | Simonev</title>
+    <link rel="shortcut icon" href="assets/img/favicon.png">
+    <link rel="stylesheet" href="assets/css/plugins.css">
+    <link href="assets/plugins/select2/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="css/activity.css">
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/plugins/sweetalert/sweetalert2.all.min.js"></script>
+    <link href="assets/plugins/sweetalert/sweetalert2.min.css" rel="stylesheet">
+    <link href="assets/plugins/summernote/summernote.min.css" rel="stylesheet" />
+    <script src="assets/plugins/tinymce/tinymce.min.js"></script>
+    <script src="assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- <script src="assets/js/plugins.js"></script> -->
+    <script src="assets/plugins/select2/js/select2.min.js"></script>
+    <!-- <script src="assets/js/theme.js"></script> -->
+    <link rel="stylesheet" type="text/css" href="assets/plugins/toastr/toastr.min.css">
+    <script src="assets/plugins/toastr/toastr.min.js"></script>
+    <script src="controller/expenditure_add.js"></script>
+</head>
+<style>
+    div:where(.swal2-container) .swal2-html-container {
+        font-size: 0.8rem !important;
+    }
+
+    th,
+    td {
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+    }
+
+    #expdescription2 > p{
+        color: #000;
+    }
+
+    
+    
+    .tox-tinymce{
+        border: 1px solid #289EF9 !important;
+    }
+
+
+    .select2-container--default .select2-selection--single {
+
+    background-color: #fff;
+    border: 1px solid #289EF9 !important;
+    border-radius: 0.4rem;
+    }
+</style>
+<body>
+    <div style="margin-bottom: 70px;">
+        <!-- navbar -->
+        <header class="wrapper bg-soft-primary">
+            <nav class="navbar navbar-expand-lg classic bg-blue-dark position-absolute navbar-light py-0">
+                <div class="container flex-lg-row flex-nowrap align-items-center shadow-lg mb-0"
+                    style="min-height: 68px;">
+                    <div class="navbar-brand w-100 row py-2">
+                        <a onclick="goBack()" class="text-white d-flex"
+                            style="width:fit-content;font-weight:bold;align-items: center;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0" />
+                            </svg>
+                            <span class="ms-2 fs-18">Add Expenditure Budget</span>
+                        </a>
+                    </div>
+                    <div class="navbar-collapse offcanvas-nav">
+                        <div class="offcanvas-header d-lg-none d-xl-none">
+                            <a href="">
+                                <div class="row">
+                                    <div class="col-4 p-0">
+                                        <img class="" src="assets/img/favicon.png" srcset="assets/img/favicon.png" alt="" />
+                                    </div>
+                                    <div class="col-8 row align-content-center d-none">
+                                        <h1 class="col-12 text-white fw-900 m-0 text-title">Simonev</h1>
+                                    </div>
+                                </div>
+                            </a>
+                            <button type="button" class="btn-close btn-close-white offcanvas-close offcanvas-nav-close" aria-label="Close"></button>
+                        </div>
+                        <!-- /.navbar-nav -->
+                    </div>
+                    <!-- /.navbar-collapse -->
+                    <div class="navbar-other ms-lg-4">
+                        <ul class="navbar-nav flex-row align-items-center ms-auto" data-sm-skip="true">
+                            <li class="nav-item dropdown d-block d-md-none d-lg-block d-xl-block notif m-0">
+                                <a href="notification.html" class="btndrop badge badge-success bg-transparent px-0 mx-2" data-status="0" id="btndrop">
+                                    <div class="icon-badge position-relative bg-transparent me-lg-2">
+                                        <i class="uil uil-bell text-white fs-45"></i>
+                                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger fs-12 countnumbnotif" id="countnumbnotif"></span>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- /.container -->
+            </nav>
+        </header>
+        <!-- navbar -->
+    </div>
+    <script src="assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/plugins/summernote/summernote.min.js"></script>
+    <script src="assets/js/plugins.js"></script>
+    <script src="assets/plugins/select2/js/select2.min.js"></script>
+    <script src="assets/js/theme.js"></script>
+    <script type="text/javascript">
+        function playSound() {
+            document.getElementById('notificationSound').play();
+        }
+    </script>
+</body>
+<section class="wrapper">
+    <span class="d-none countnumbnotif2" id="countnumbnotif2"></span>
+    <div class="container p-3" style="z-index: 4; position:relative;">
+        <div class="row mb-5" >
+            <form id="add_expenditure_form" method="POST" enctype="multipart/form-data">
+                <input type="hidden" id="expsact_id" name="expsact_id">
+                <input type="hidden" id="expcreatedBy" name="expcreatedBy">
+                <div class="p-2 ">
+                  
+                    <div class="row" id="addactivity" style="display: flex;">
+                        <div class="row mb-3" id="expuser" style="display: none;">
+                            <div class="col-4 rounded">
+                                <img id="expphoto" src="" alt="" width="80px">
+                            </div>
+                            
+                            <label class="col-8 row" >
+                                <b id="expname" class="col-12"></b>
+                                <div id="expstatus" class="col-12"></div>
+                            </label>
+                        </div>
+                        <div class="mb-3">
+                            <label for="exptitle" class="form-label fw-bold text-dark">Title:</label>
+                            <input type="text" class="form-control" id="exptitle" name="exptitle" required>
+                        </div>
+                        <div class="col-6">
+                            <div class="mb-3">
+                                <label for="type_currency" class="col-form-label text-dark">Type Currency</label>
+                                <select name="type_currency" id="type_currency" class="form-select" data-id="expbudget" onchange="open_budget(this)">
+                                    <option selected disabled>Select type currency</option>
+                                    <option value="dollar">USD ($)</option>
+                                    <option value="rupiah">IDR (Rp)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="mb-3">
+                                <label for="expbudget" class="col-form-label text-dark">Budget</label>
+                                <input type="number" class="form-control bg-white" id="expbudget"  disabled data-id='expenditure_area' data-main="0" name="budget" required>
+                            </div>
+                        </div>
+                        <div class="mb-3 col-12">
+                            <label for="expdate" class="form-label fw-bold text-dark">Date:</label>
+                            <input type="date" class="form-control" id="expdate" name="expdate" value="" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="activity_expenditure_description" class="col-form-label text-dark">Description</label>
+                            <textarea class="form-control" name="description" id="activity_expenditure_description" cols="30" rows="10" style="display: none;"></textarea>
+                            <div  class="border p-3 rounded border-primary form-control" id="expdescription2" style="display: none;" ></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row bg-white w-100 border border-2 p-1" style="position: fixed;bottom: 0px;z-index: 6;display: flex;justify-content: space-between;">
+                    <div class="col-6">
+                        <button type="button" class="btn btn-sm btn-warning" onclick="goBack()">Close</button>
+                    </div>
+                    <div class="col-6 text-end">
+                        <button   id="expsubmit" onclick="submitexp()" type="button" class="btn btn-sm btn-success">Submit</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+<audio controls id="notificationSound" style="display: none;" preload="auto">
+    <source src="assets/plugins/notifications/sounds/notif.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+</audio>
+<script src="controller/main.js"></script>

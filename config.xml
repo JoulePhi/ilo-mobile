@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.rdpl.ilomonev" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>ILO P2Impact</name>
+    <description>ILO P2Impact</description>
+    <author email="rdpl.id@gmail.com" href="https://rdpl.co.id/">
+        RDPL
+    </author>
+    <content src="index.html" />
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+    <platform name="android">
+        <icon src="res/icon/ldpi.png" density="ldpi" />
+        <icon src="res/icon/mdpi.png" density="mdpi" />
+        <icon src="res/icon/hdpi.png" density="hdpi" />
+        <icon src="res/icon/xhdpi.png" density="xhdpi" />
+
+        <preference name="AndroidWindowSplashScreenAnimatedIcon" value="res/splash/splash.png" />
+        <preference name="AndroidWindowSplashScreenIconBackgroundColor" value="#1f2cbe" />
+        <preference name="SplashScreenBackgroundColor" value="#1f2cbe" />
+        <resource-file src="res/color.xml" target="res/color.xml" />
+    </platform>
+
+</widget>

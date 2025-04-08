@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>No Connection</title>
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            background-color: #1E2DBE;
+        }
+
+        body {
+            font-family: sans-serif;
+            color: #FFF;
+            text-align: center;
+            font-size: 150%;
+        }
+
+        h1,
+        h2 {
+            font-weight: normal;
+        }
+
+        h1 {
+            margin: 0 auto;
+            padding: 0.15em;
+            font-size: 10em;
+            text-shadow: 0 2px 2px #000;
+        }
+
+        h2 {
+            margin-bottom: 2em;
+        }
+    </style>
+    <script src="cordova.js"></script>
+    <script>
+        document.addEventListener("deviceready", function () {
+            document.addEventListener("online", function () {
+                if (localStorage.getItem("isLoggedIn") === "true") {
+                    window.location.href = "activity.html";
+                } else {
+                    window.location.href = "index.html";
+                }
+            });
+        }, false);
+    </script>
+</head>
+
+<body>
+    <h1>⚠</h1>
+    <h2>No connection to the internet</h2>
+</body>
+
+</html>

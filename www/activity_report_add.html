@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="An impressive and flawless site template that includes various UI elements and countless features, attractive ready-made blocks and rich pages, basically everything you need to create a unique and professional website.">
+    <meta name="keywords"
+        content="bootstrap 5, business, corporate, creative, gulp, marketing, minimal, modern, multipurpose, one page, responsive, saas, sass, seo, startup">
+    <meta name="author" content="elemis">
+    <title> Activity | Simonev</title>
+    <link rel="shortcut icon" href="assets/img/favicon.png">
+    <link rel="stylesheet" href="assets/css/plugins.css">
+    <!-- <link href="assets/plugins/select2/css/select2.min.css" rel="stylesheet" /> -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="css/activity.css">
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/plugins/sweetalert/sweetalert2.all.min.js"></script>
+    <link href="assets/plugins/sweetalert/sweetalert2.min.css" rel="stylesheet">
+    <link href="assets/plugins/summernote/summernote.min.css" rel="stylesheet" />
+    <script src="assets/plugins/tinymce/tinymce.min.js"></script>
+    <script src="assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- <script src="assets/js/plugins.js"></script> -->
+    <!-- <script src="assets/plugins/select2/js/select2.min.js"></script> -->
+    <!-- <script src="assets/js/theme.js"></script> -->
+    <script src="controller/cached_ajax.js"></script>
+    <link rel="stylesheet" type="text/css" href="assets/plugins/toastr/toastr.min.css">
+    <script src="assets/plugins/toastr/toastr.min.js"></script>
+
+</head>
+<style>
+    div:where(.swal2-container) .swal2-html-container {
+        font-size: 0.8rem !important;
+    }
+
+    th,
+    td {
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+    }
+
+    #expdescription2>p {
+        color: #000;
+    }
+
+
+
+    .tox-tinymce {
+        border: 1px solid #289EF9 !important;
+    }
+
+
+    .select2-container--default .select2-selection--single {
+
+        background-color: #fff;
+        border: 1px solid #289EF9 !important;
+        border-radius: 0.4rem;
+    }
+</style>
+
+<body>
+    <div style="margin-bottom: 70px;">
+        <!-- navbar -->
+        <header class="wrapper bg-soft-primary">
+            <nav class="navbar navbar-expand-lg classic bg-blue-dark position-absolute navbar-light py-0">
+                <div class="container flex-lg-row flex-nowrap align-items-center shadow-lg mb-0"
+                    style="min-height: 68px;">
+                    <div class="navbar-brand w-100 row py-2">
+                        <a onclick="goBack()" class="text-white d-flex"
+                            style="width:fit-content;font-weight:bold;align-items: center;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor"
+                                class="bi bi-chevron-left" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd"
+                                    d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0" />
+                            </svg>
+                            <span class="ms-2 fs-18">Add Report Activity</span>
+                        </a>
+                    </div>
+                    <div class="navbar-collapse offcanvas-nav">
+                        <div class="offcanvas-header d-lg-none d-xl-none">
+                            <a href="">
+                                <div class="row">
+                                    <div class="col-4 p-0">
+                                        <img class="" src="assets/img/favicon.png" srcset="assets/img/favicon.png"
+                                            alt="" />
+                                    </div>
+                                    <div class="col-8 row align-content-center d-none">
+                                        <h1 class="col-12 text-white fw-900 m-0 text-title">Simonev</h1>
+                                    </div>
+                                </div>
+                            </a>
+                            <button type="button" class="btn-close btn-close-white offcanvas-close offcanvas-nav-close"
+                                aria-label="Close"></button>
+                        </div>
+                        <!-- /.navbar-nav -->
+                    </div>
+                    <!-- /.navbar-collapse -->
+                    <div class="navbar-other ms-lg-4">
+                        <ul class="navbar-nav flex-row align-items-center ms-auto" data-sm-skip="true">
+                            <li class="nav-item dropdown d-block d-md-none d-lg-block d-xl-block notif m-0">
+                                <a href="notification.html" class="btndrop badge badge-success bg-transparent px-0 mx-2"
+                                    data-status="0" id="btndrop">
+                                    <div class="icon-badge position-relative bg-transparent me-lg-2">
+                                        <i class="uil uil-bell text-white fs-45"></i>
+                                        <span
+                                            class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger fs-12 countnumbnotif"
+                                            id="countnumbnotif"></span>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- /.container -->
+            </nav>
+        </header>
+        <!-- navbar -->
+    </div>
+
+    <script src="assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/plugins/summernote/summernote.min.js"></script>
+    <script src="assets/js/plugins.js"></script>
+    <!-- <script src="assets/plugins/select2/js/select2.min.js"></script> -->
+    <script src="assets/js/theme.js"></script>
+    <script type="text/javascript">
+        function playSound() {
+            document.getElementById('notificationSound').play();
+        }
+    </script>
+    <script src="cordova.js"></script>
+    <script>
+        document.addEventListener("deviceready", function () {
+            console.log("Device Ready Detail Activity");
+            document.addEventListener("offline", onOffline, false);
+            document.addEventListener("online", onOnline, false);
+            function onOffline() {
+                $("#noConnAlert").removeClass("d-none");
+                console.log("Offline");
+            }
+            function onOnline() {
+                $("#noConnAlert").addClass("d-none");
+                console.log("Online");
+            }
+        }, false);
+    </script>
+</body>
+<section class="wrapper" style="padding-bottom: 100px !important;">
+    <span class="d-none countnumbnotif2" id="countnumbnotif2"></span>
+    <div class="container p-3" style="z-index: 4; position:relative;">
+        <div class="alert alert-danger-2 d-none" role="alert" id="noConnAlert">
+            You are using offline mode, please check your internet connection.
+        </div>
+        <div class="row mb-5">
+            <form id="add_report_form" method="POST" enctype="multipart/form-data">
+                <input type="hidden" id="sact_id" name="sact_id">
+                <input type="hidden" id="createdBy" name="createdBy">
+
+                <div class="row p-3" id="addactivity" style="display: flex;">
+                    <div class="mb-3">
+                        <label for="title" class="form-label fw-bold text-dark">Title<span
+                                class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="title" name="title" required>
+                        <small class="text-danger"><b>Fill in the title of the training activity clearly</b></small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="form-label fw-bold text-dark">Description<span
+                                class="text-danger">*</span></label>
+                        <textarea type="text" class="form-control" id="description" name="description"
+                            row="10"></textarea>
+                        <small class="text-danger"><b>Fill in the description of the training activity
+                                clearly</b></small>
+                    </div>
+
+                    <div class="custom-select col-12 mb-3">
+                        <label for="location" class="form-label text-dark">Location<label
+                                class="text-danger">*</label></label>
+                        <div class="select-box form-select">
+                            <div id="selected-locations">Select Locations</div>
+                        </div>
+                        <div class="options-container">
+                            <input type="text" class="search-box" placeholder="Type location here...">
+                            <div class="options-list"></div>
+                        </div>
+                        <input type="hidden" name="location" id="location">
+                    </div>
+                    <div class="mb-3">
+                        <label for="date" class="form-label fw-bold text-dark">Date<span
+                                class="text-danger">*</span></label>
+                        <input type="date" class="form-control" id="date" name="date" value="" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="date" class="form-label fw-bold text-dark">#Number Of Beneficiary<span
+                                class="text-danger">*</span></label>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="row" id="add_milestonex">
+                                    <div class="col-7 d-flex justify-content-start" id="fmiles" style="display: block;">
+                                        <select id="milestone_id"
+                                            class="form-select form-select milestone_dropdown"></select>
+                                    </div>
+                                    <div class="col-5 d-flex justify-content-end" id="btn-add-milestone">
+
+                                    </div>
+                                </div>
+                                <div class="row mt-1">
+                                    <div class="col-12 d-flex flex-wrap justify-content-center p-1">
+                                        <table>
+                                            <thead>
+                                                <tr class="row justify-content-between">
+                                                    <th class="text-dark col-7 ps-5"
+                                                        style="vertical-align:top !important;">
+
+                                                    <th class="text-dark col-4 ps-0 text-start"
+                                                        style="vertical-align:top !important;">
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="milestone_field">
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+
+                            <div class="col-6">
+                                <label>Male</label>
+                                <input type="number" min="0" class="form-control achievement_add_report" value="0"
+                                    id="achievment_male_id" required name="achievment_male" oninput="setzero(event)">
+                            </div>
+                            <div class="col-6">
+                                <label>Female</label>
+                                <input type="number" min="0" class="form-control achievement_add_report" value="0"
+                                    id="achievment_female_id" required name="achievment_female"
+                                    oninput="setzero(event)">
+                            </div>
+                            <small class="text-danger"><b id="beneficiaryArea">Make sure the number of male and female
+                                    is the same as the total beneficiary</b></small>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="row">
+                            <div class="col-12 d-flex justify-content-start">
+                                <label class="form-label fw-bold text-dark mb-0">Attachment</label>
+                            </div>
+                            <div class="col-12" id="">
+                                <table>
+                                    <tbody id="attachment_field">
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-12 d-flex mt-2 justify-content-end">
+                                <button type="button" class="btn btn-primary btn-sm w-100"
+                                    onclick="add_attachment()">Add Attachment</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row bg-white w-100 border border-2 p-1"
+                    style="position: fixed;bottom: 0px;z-index: 6;display: flex;justify-content: space-between;">
+                    <div class="col-6">
+                        <button type="button" class="btn btn-sm btn-warning" onclick="goBack()">Close</button>
+                    </div>
+                    <div class="col-6 text-end">
+                        <button id="submitReportBTN" type="submit" class="btn btn-sm btn-success">Submit</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+<audio controls id="notificationSound" style="display: none;" preload="auto">
+    <source src="assets/plugins/notifications/sounds/notif.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+</audio>
+<script src="controller/activity_report_add.js"></script>
+<script src="controller/main.js"></script>
