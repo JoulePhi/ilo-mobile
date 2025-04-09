@@ -19,11 +19,11 @@ $(document).ready(function () {
   console.log(localReportsInitiative);
   let localReportsInitiativeLength = 0;
   let localReportsInitiativeCount = 0;
+  var html = "";
   if (localReportsInitiative) {
     localReportsInitiativeLength = localReportsInitiative.length;
     localReportsInitiative.reverse();
 
-    var html = "";
     for (let i = 0; i < localReportsInitiative.length; i++) {
       console.log(localReportsInitiative[i]);
       let reports = JSON.parse(localReportsInitiative[i]);
@@ -208,6 +208,7 @@ $(document).ready(function () {
           html += "</div >";
         }
       }
+      console.log(html);
       list_report.innerHTML = html;
     },
   });
