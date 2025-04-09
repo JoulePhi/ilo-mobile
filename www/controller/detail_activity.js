@@ -16,6 +16,7 @@ var dataExpenditure = [];
 var type1 = "mandatory";
 
 $(document).ready(function () {
+  var list_report = document.getElementById("list_report");
   const userId = localStorage.getItem("id");
   const subacId = localStorage.getItem("id_subac_detail");
   var localReports = localStorage.getItem(
@@ -23,62 +24,72 @@ $(document).ready(function () {
   );
   console.log(localReports);
   localReports = JSON.parse(localReports);
-  var pending_list_report = document.getElementById("pending_list_report");
+  const localReportsLength = 0;
+  let localReportsCount = 0;
   if (localReports) {
+    localReportsLength = localReports.length;
+    localReports.reverse();
     for (let i = 0; i < localReports.length; i++) {
-      let ofReport = localReports[i]["data"];
-      const totalAchievement =
-        Number(ofReport["achievment_male"]) +
-        Number(ofReport["achievment_female"]);
+      let reports = JSON.parse(localReports[i]);
 
+      console.log(typeof reports);
+      let ofReport = reports["data"];
+      let achivments = "";
+      for (let j = 0; j < ofReport["achievment[]"].length; j++) {
+        achivments += ofReport["achievment[]"][j] + " SMEs<br>";
+      }
+      list_report.innerHTML +=
+        `<tr id="or-${localReports[i]["id"]}">` +
+        '<td><p class="mb-0" style="text-transform: capitalize">' +
+        ofReport["title"] +
+        `</p>
+          <small class="text-danger">This report is offline</small>
+          </td>` +
+        "<td>" +
+        achivments +
+        "</td>" +
+        `<td class="text-center">
+            <a href="#" class="btn btn-ilo-green btn-sm p-1 pt-0 pb-0 disabled">
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-folder2-open" viewBox="0 0 16 16">
+                <path d="M1 3.5A1.5 1.5 0 0 1 2.5 2h2.764c.958 0 1.76.56 2.311 1.184C7.985 3.648 8.48 4 9 4h4.5A1.5 1.5 0 0 1 15 5.5v.64c.57.265.94.876.856 1.546l-.64 5.124A2.5 2.5 0 0 1 12.733 15H3.266a2.5 2.5 0 0 1-2.481-2.19l-.64-5.124A1.5.5 0 0 0 14.367 7zM2 6h12v-.5a.5.5 0 0 0-.5-.5H9c-.964 0-1.71-.629-2.174-1.154C6.374 3.334 5.82 3 5.264 3H2.5a.5.5 0 0 0-.5.5zm-.367 1a.5.5 0 0 0-.496.562l.64 5.124A1.5 1.5 0 0 0 3.266 14h9.468a1.5 1.5 0 0 0 1.489-1.314l.64-5.124A.5.5 0 0 0 14.367 7z" />
+              </svg>
+              </a>
+            </td>` +
+        "</tr>";
       if (navigator.onLine) {
-        const formData = new FormData();
-        for (const key in ofReport) {
-          if (ofReport.hasOwnProperty(key)) {
-            formData.append(key, ofReport[key]);
-          }
-        }
-        $.ajax({
-          type: "POST",
-          url: localReports[i]["url"],
-          data: formData,
-          dataType: "json",
-          contentType: false,
-          processData: false,
-          success: function (data) {
-            if (data.status == "success") {
-              toastr.success("Report has been saved");
-              localReports.splice(i, 1);
-              localStorage.setItem(
-                "offlineReports_" + subacId + "_" + userId,
-                JSON.stringify(localReports)
-              );
-              // $(`#or-${localReports[i]["timestamp"]}`).remove();
-            } else {
-              pending_list_report.innerHTML +=
-                `<tr id="or-${localReports[i]["timestamp"]}">` +
-                '<td><p class="mb-0" style="text-transform: capitalize">' +
-                ofReport["title"] +
-                "</p></td>" +
-                "<td>" +
-                totalAchievement +
-                " SMEs" +
-                "</td>" +
-                "</tr>";
-            }
-          },
-        });
-      } else {
-        pending_list_report.innerHTML +=
-          `<tr id="or-${localReports[i]["timestamp"]}">` +
-          '<td><p class="mb-0" style="text-transform: capitalize">' +
-          ofReport["title"] +
-          "</p></td>" +
-          "<td>" +
-          totalAchievement +
-          " SMEs" +
-          "</td>" +
-          "</tr>";
+        // const formData = new FormData();
+        // for (const key in ofReport) {
+        //   if (ofReport.hasOwnProperty(key)) {
+        //     formData.append(key, ofReport[key]);
+        //   }
+        // }
+        // $.ajax({
+        //   type: "POST",
+        //   url: reports["url"],
+        //   data: formData,
+        //   dataType: "json",
+        //   contentType: false,
+        //   processData: false,
+        //   success: function (data) {
+        //     if (data.status == "success") {
+        //       localReports.splice(i, 1);
+        //       localStorage.setItem(
+        //         "offlineReports_" + subacId + "_" + userId,
+        //         JSON.stringify(localReports)
+        //       );
+        //       localReportsCount++;
+        //       if (localReportsCount == localReportsLength) {
+        //         console.log("All reports have been sent");
+        //         toastr.success("All reports have been sent");
+        //         setTimeout(function () {
+        //           location.reload();
+        //         }, 2000);
+        //       }
+        //     } else {
+        //       console.log("Failed to send report");
+        //     }
+        //   },
+        // });
       }
     }
   }
@@ -151,7 +162,6 @@ $(document).ready(function () {
         }
         document.getElementById("date").valueAsDate = new Date();
         var list_activity = document.getElementById("list_activity");
-        var list_report = document.getElementById("list_report");
 
         var list_gallery = document.getElementById("list_gallery");
         var allcomment = document.getElementById("allcomment");
@@ -379,26 +389,26 @@ $(document).ready(function () {
                 "</tr>";
             }
           } else {
-            list_report.innerHTML +=
-              '<tr onclick="report_detail(this)" data-report="' +
-              data.data["report"][m]["sub_activity_report_id"] +
-              '" >' +
-              '<td><p class="mb-0" style="text-transform: capitalize">' +
-              data.data["report"][m]["title"] +
-              "</p></td>" +
-              "<td>" +
-              data.data["report_milestone"][data.data["report"][m]["sarid"]] +
-              "</td>" +
-              '<td class="text-center">' +
-              '<a onclick="report_detail(this)" data-report="' +
-              data.data["report"][m]["sub_activity_report_id"] +
-              '" class="btn btn-ilo-green btn-sm p-1 pt-0 pb-0" > ' +
-              '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill = "currentColor" class="bi bi-folder2-open" viewBox = "0 0 16 16" > ' +
-              '<path d = "M1 3.5A1.5 1.5 0 0 1 2.5 2h2.764c.958 0 1.76.56 2.311 1.184C7.985 3.648 8.48 4 9 4h4.5A1.5 1.5 0 0 1 15 5.5v.64c.57.265.94.876.856 1.546l-.64 5.124A2.5 2.5 0 0 1 12.733 15H3.266a2.5 2.5 0 0 1-2.481-2.19l-.64-5.124A1.5 1.5 0 0 1 1 6.14zM2 6h12v-.5a.5.5 0 0 0-.5-.5H9c-.964 0-1.71-.629-2.174-1.154C6.374 3.334 5.82 3 5.264 3H2.5a.5.5 0 0 0-.5.5zm-.367 1a.5.5 0 0 0-.496.562l.64 5.124A1.5 1.5 0 0 0 3.266 14h9.468a1.5 1.5 0 0 0 1.489-1.314l.64-5.124A.5.5 0 0 0 14.367 7z" />' +
-              "</svg>" +
-              "</a>" +
-              "</td>" +
-              "</tr>";
+            list_report.innerHTML += `
+              <tr onclick="report_detail(this)" data-report="${
+                data.data["report"][m]["sub_activity_report_id"]
+              }">
+              <td><p class="mb-0" style="text-transform: capitalize">${
+                data.data["report"][m]["title"]
+              }</p></td>
+              <td>${
+                data.data["report_milestone"][data.data["report"][m]["sarid"]]
+              }</td>
+              <td class="text-center">
+                <a onclick="report_detail(this)" data-report="${
+                  data.data["report"][m]["sub_activity_report_id"]
+                }" class="btn btn-ilo-green btn-sm p-1 pt-0 pb-0">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-folder2-open" viewBox="0 0 16 16">
+                  <path d="M1 3.5A1.5 1.5 0 0 1 2.5 2h2.764c.958 0 1.76.56 2.311 1.184C7.985 3.648 8.48 4 9 4h4.5A1.5 1.5 0 0 1 15 5.5v.64c.57.265.94.876.856 1.546l-.64 5.124A2.5 2.5 0 0 1 12.733 15H3.266a2.5 2.5 0 0 1-2.481-2.19l-.64-5.124A1.5.5 0 0 0 14.367 7zM2 6h12v-.5a.5.5 0 0 0-.5-.5H9c-.964 0-1.71-.629-2.174-1.154C6.374 3.334 5.82 3 5.264 3H2.5a.5.5 0 0 0-.5.5zm-.367 1a.5.5 0 0 0-.496.562l.64 5.124A1.5 1.5 0 0 0 3.266 14h9.468a1.5 1.5 0 0 0 1.489-1.314l.64-5.124A.5.5 0 0 0 14.367 7z" />
+                </svg>
+                </a>
+              </td>
+              </tr>`;
           }
         }
         for (let n = 0; n < data.data["gallery"].length; n++) {
@@ -414,6 +424,45 @@ $(document).ready(function () {
             data.data["gallery"][n]["attachment"] +
             '" alt = "" > ' +
             "</div>";
+        }
+        var localComments = localStorage.getItem(
+          "offlineComment_" + subacId + "_" + userId
+        );
+        localComments = JSON.parse(localComments);
+        if (localComments) {
+          localComments.reverse();
+          for (let i = 0; i < localComments.length; i++) {
+            let comment = JSON.parse(localComments[i]);
+            let commData = comment["data"];
+            var a_c_html = "";
+            a_c_html += `
+        <div class="row mt-3 justify-content-center">
+          <div class="col-11 mb-2 px-0">
+        <div class="card border shadow shadow-lg">
+          <div class="card-header px-5 py-3">
+        <div class="row">
+          <div class="col-2 d-flex justify-content-center">
+        <img style="border-radius: 50%;" src="${base_url_endpoint}assets/images/avatars/${
+              localStorage.photo
+            }" alt="" width="40" height="40">
+          </div>
+          <div class="col-8 p-0 d-flex flex-wrap" style="align-self: center;">
+        <b class="mb-0 fs-12 text-dark col-12"> You </b>
+        <span class="mb-0 fs-10 col-12" style="color: grey;"> ${changeDateFormat(
+          comment.timestamp
+        )} </span>
+        <span class="badge bg-warning text-dark fs-10">Offline</span>
+          </div>
+        </div>
+          </div>
+          <div class="card-body pe-5 ps-5 pt-1 pb-2">
+        <div class="fs-12 mb-0">${commData["comment"]}</div>
+          </div>
+        </div>
+          </div>
+        </div>`;
+            $("#allcomment").prepend(a_c_html);
+          }
         }
         for (let o = 0; o < data.data["comment"].length; o++) {
           var name = data.data["comment"][o]["name"];
@@ -591,6 +640,42 @@ $(document).ready(function () {
 
 function getbudget(type1) {
   if (type1 == "mandatory") {
+    var list_expenditure = document.getElementById("list_expenditure");
+    const userId = localStorage.getItem("id");
+    const subacId = localStorage.getItem("id_subac_detail");
+    var offlineExpenditureBudget = localStorage.getItem(
+      "offlineExpenditureBudget_" + subacId + "_" + userId
+    );
+    console.log(offlineExpenditureBudget);
+    offlineExpenditureBudget = JSON.parse(offlineExpenditureBudget);
+
+    if (offlineExpenditureBudget != null) {
+      offlineExpenditureBudget.reverse();
+      for (let i = 0; i < offlineExpenditureBudget.length; i++) {
+        let exp = JSON.parse(offlineExpenditureBudget[i]);
+        let expData = exp["data"];
+        list_expenditure.innerHTML +=
+          "<tr >" +
+          '<td><p class="mb-0" style="text-transform: capitalize">' +
+          expData["exptitle"] +
+          "</p></td>" +
+          "<td>" +
+          `<span class="badge badge-warning bg-warning text-dark fs-10">Offline</span>` +
+          "</td>" +
+          '<td class="text-center">' +
+          '<a class="btn btn-ilo-green btn-sm disabled p-1 pt-0 pb-0" > ' +
+          '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill = "currentColor" class="bi bi-folder2-open" viewBox = "0 0 16 16" > ' +
+          '<path d = "M1 3.5A1.5 1.5 0 0 1 2.5 2h2.764c.958 0 1.76.56 2.311 1.184C7.985 3.648 8.48 4 9 4h4.5A1.5 1.5 0 0 1 15 5.5v.64c.57.265.94.876.856 1.546l-.64 5.124A2.5 2.5 0 0 1 12.733 15H3.266a2.5 2.5 0 0 1-2.481-2.19l-.64-5.124A1.5 1.5 0 0 1 1 6.14zM2 6h12v-.5a.5.5 0 0 0-.5-.5H9c-.964 0-1.71-.629-2.174-1.154C6.374 3.334 5.82 3 5.264 3H2.5a.5.5 0 0 0-.5.5zm-.367 1a.5.5 0 0 0-.496.562l.64 5.124A1.5 1.5 0 0 0 3.266 14h9.468a1.5 1.5 0 0 0 1.489-1.314l.64-5.124A.5.5 0 0 0 14.367 7z" />' +
+          "</svg>" +
+          "</a>" +
+          "</td>" +
+          "<td>" +
+          "-" +
+          "</td>" +
+          "</tr>";
+      }
+    }
+
     document.getElementById("acEndBudget").style.display = "flex";
     cachedAjax({
       method: "GET",
@@ -602,7 +687,6 @@ function getbudget(type1) {
       success: function (data2, isCache) {
         if (data2.status == "SUCCESS") {
           dataExpenditure = data2["data"];
-          var list_expenditure = document.getElementById("list_expenditure");
           for (let e = 0; e < data2["data"].length; e++) {
             var st = data2["data"][e]["status"];
 
@@ -1197,117 +1281,191 @@ function sendcomment() {
     );
   } else {
     tinyMCE.get("comment").save();
-    var jqXHR1 = $.ajax({
-      type: "GET",
-      url: url_endpoint + "get_csrf",
-      crossDomain: true,
-      cache: false,
-      beforeSend: function () {
-        timeout = setTimeout(function () {
-          toastr.error("Bad signal, please check your connection");
-          setLoadingButton(
-            $(button),
-            false,
-            '<svg xmlns="http://www.w3.org/2000/svg"width="16" height="16" fill="currentColor" class="bi bi-send-fill"viewBox="0 0 16 16"><path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471z" /></svg>'
-          );
-          jqXHR1.abort();
-        }, 2000);
-      },
-      success: function (datay) {
-        clearTimeout(timeout);
-        var fd = new FormData($("#form_comment")[0]);
-        fd.append("sub_activity_id", localStorage.id_subac_detail);
-        fd.append("sub_activity_report_id", 0);
-        fd.append("created_by", localStorage.id);
-        fd.append(datay["name"], datay["token"]);
-        let jqXHR2 = $.ajax({
-          url: url_endpoint + "send_comment",
-          type: "POST",
-          crossDomain: true,
-          cache: false,
-          contentType: false,
-          processData: false,
-          data: fd,
-          beforeSend: function () {
-            timeout = setTimeout(function () {
-              toastr.error("Bad signal, please check your connection");
+
+    if (!navigator.onLine) {
+      var fd = new FormData($("#form_comment")[0]);
+      fd.append("sub_activity_id", localStorage.id_subac_detail);
+      fd.append("sub_activity_report_id", 0);
+      fd.append("created_by", localStorage.id);
+
+      const userId = localStorage.id;
+      const subacId = localStorage.id_subac_detail;
+      const currentDate = new Date();
+      const utcMilliseconds = currentDate.getUTCMilliseconds();
+
+      const data = {};
+
+      for (let [key, value] of fd.entries()) {
+        if (data[key]) {
+          if (!Array.isArray(data[key])) {
+            data[key] = [data[key]];
+          }
+          data[key].push(value);
+        } else {
+          data[key] = value;
+        }
+      }
+
+      const offlineData = {
+        id: utcMilliseconds,
+        url: url_endpoint + "send_comment",
+        data: data,
+        timestamp: new Date().toISOString(),
+      };
+      let offlineComment =
+        JSON.parse(
+          localStorage.getItem("offlineComment_" + subacId + "_" + userId)
+        ) || [];
+      offlineComment.push(JSON.stringify(offlineData));
+      console.log(offlineComment);
+      localStorage.setItem(
+        "offlineComment_" + subacId + "_" + userId,
+        JSON.stringify(offlineComment)
+      );
+      toastr.warning("No internet connection. Comment saved locally.");
+      var a_c_html = "";
+      a_c_html += `
+        <div class="row mt-3 justify-content-center">
+          <div class="col-11 mb-2 px-0">
+        <div class="card border shadow shadow-lg">
+          <div class="card-header px-5 py-3">
+        <div class="row">
+          <div class="col-2 d-flex justify-content-center">
+        <img style="border-radius: 50%;" src="${base_url_endpoint}assets/images/avatars/${
+        localStorage.photo
+      }" alt="" width="40" height="40">
+          </div>
+          <div class="col-8 p-0 d-flex flex-wrap" style="align-self: center;">
+        <b class="mb-0 fs-12 text-dark col-12"> You </b>
+        <span class="mb-0 fs-10 col-12" style="color: grey;"> ${changeDateFormat(
+          new Date()
+        )} </span>
+        <span class="badge bg-warning text-dark fs-10">Offline</span>
+          </div>
+        </div>
+          </div>
+          <div class="card-body pe-5 ps-5 pt-1 pb-2">
+        <div class="fs-12 mb-0">${comment}</div>
+          </div>
+        </div>
+          </div>
+        </div>`;
+      $("#allcomment").prepend(a_c_html);
+      tinyMCE.get("comment").setContent("");
+    } else {
+      var jqXHR1 = $.ajax({
+        type: "GET",
+        url: url_endpoint + "get_csrf",
+        crossDomain: true,
+        cache: false,
+        beforeSend: function () {
+          timeout = setTimeout(function () {
+            toastr.error("Bad signal, please check your connection");
+            setLoadingButton(
+              $(button),
+              false,
+              '<svg xmlns="http://www.w3.org/2000/svg"width="16" height="16" fill="currentColor" class="bi bi-send-fill"viewBox="0 0 16 16"><path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471z" /></svg>'
+            );
+            jqXHR1.abort();
+          }, 2000);
+        },
+        success: function (datay) {
+          clearTimeout(timeout);
+          var fd = new FormData($("#form_comment")[0]);
+          fd.append("sub_activity_id", localStorage.id_subac_detail);
+          fd.append("sub_activity_report_id", 0);
+          fd.append("created_by", localStorage.id);
+          fd.append(datay["name"], datay["token"]);
+
+          let jqXHR2 = $.ajax({
+            url: url_endpoint + "send_comment",
+            type: "POST",
+            crossDomain: true,
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: fd,
+            beforeSend: function () {
+              timeout = setTimeout(function () {
+                toastr.error("Bad signal, please check your connection");
+                setLoadingButton(
+                  $(button),
+                  false,
+                  '<svg xmlns="http://www.w3.org/2000/svg"width="16" height="16" fill="currentColor" class="bi bi-send-fill"viewBox="0 0 16 16"><path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471z" /></svg>'
+                );
+                jqXHR2.abort();
+              }, 2000);
+            },
+            success: function (data) {
+              clearTimeout(timeout);
               setLoadingButton(
                 $(button),
                 false,
                 '<svg xmlns="http://www.w3.org/2000/svg"width="16" height="16" fill="currentColor" class="bi bi-send-fill"viewBox="0 0 16 16"><path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471z" /></svg>'
               );
-              jqXHR2.abort();
-            }, 2000);
-          },
-          success: function (data) {
-            clearTimeout(timeout);
-            setLoadingButton(
-              $(button),
-              false,
-              '<svg xmlns="http://www.w3.org/2000/svg"width="16" height="16" fill="currentColor" class="bi bi-send-fill"viewBox="0 0 16 16"><path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471z" /></svg>'
-            );
-            if (data["status"] == "SUCCESS") {
-              toastr.success(data["message"]);
-              var allcomment = document.getElementById("allcomment");
-              var a_c_html = "";
-              a_c_html +=
-                '<div class="row mt-3 justify-content-center">' +
-                '<div class="col-11 mb-2 px-0">' +
-                '<div class="card border shadow shadow-lg">' +
-                '<div class="card-header px-5 py-3">' +
-                '<div class="row">' +
-                '<div class="col-2 d-flex justify-content-center">' +
-                '<img style="border-radius: 50%;" src="' +
-                base_url_endpoint +
-                "assets/images/avatars/" +
-                localStorage.photo +
-                '" alt="" width="40" height="40">' +
-                "</div>" +
-                '<div class="col-8 p-0 d-flex flex-wrap" style="align-self: center;">' +
-                '<b class="mb-0 fs-12 text-dark col-12"> You </b>' +
-                '<span class="mb-0 fs-10 col-12" style="color: grey;" > ' +
-                changeDateFormat(new Date()) +
-                "</span > " +
-                "</div>" +
-                "</div>" +
-                "</div>" +
-                '<div class="card-body pe-5 ps-5 pt-1 pb-2">' +
-                '<div class="fs-12 mb-0">' +
-                comment +
-                "</div>" +
-                "</div>" +
-                "</div>" +
-                "</div>" +
-                "</div>";
-              $("#allcomment").prepend(a_c_html);
-              tinyMCE.get("comment").setContent("");
-            } else {
-              toastr.error(data["message"]);
-            }
-          },
-          error: function (xhr, status, error) {
-            clearTimeout(timeout);
-            toastr.error(error);
-            clearTimeout(timeout);
-            setLoadingButton(
-              $(button),
-              false,
-              '<svg xmlns="http://www.w3.org/2000/svg"width="16" height="16" fill="currentColor" class="bi bi-send-fill"viewBox="0 0 16 16"><path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471z" /></svg>'
-            );
-          },
-        });
-      },
-      error: function (xhr, status, error) {
-        clearTimeout(timeout);
-        toastr.error(error);
-        clearTimeout(timeout);
-        setLoadingButton(
-          $(button),
-          false,
-          '<svg xmlns="http://www.w3.org/2000/svg"width="16" height="16" fill="currentColor" class="bi bi-send-fill"viewBox="0 0 16 16"><path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471z" /></svg>'
-        );
-      },
-    });
+              if (data["status"] == "SUCCESS") {
+                var allcomment = document.getElementById("allcomment");
+                toastr.success(data["message"]);
+                var a_c_html = "";
+                a_c_html +=
+                  '<div class="row mt-3 justify-content-center">' +
+                  '<div class="col-11 mb-2 px-0">' +
+                  '<div class="card border shadow shadow-lg">' +
+                  '<div class="card-header px-5 py-3">' +
+                  '<div class="row">' +
+                  '<div class="col-2 d-flex justify-content-center">' +
+                  '<img style="border-radius: 50%;" src="' +
+                  base_url_endpoint +
+                  "assets/images/avatars/" +
+                  localStorage.photo +
+                  '" alt="" width="40" height="40">' +
+                  "</div>" +
+                  '<div class="col-8 p-0 d-flex flex-wrap" style="align-self: center;">' +
+                  '<b class="mb-0 fs-12 text-dark col-12"> You </b>' +
+                  '<span class="mb-0 fs-10 col-12" style="color: grey;" > ' +
+                  changeDateFormat(new Date()) +
+                  "</span > " +
+                  "</div>" +
+                  "</div>" +
+                  "</div>" +
+                  '<div class="card-body pe-5 ps-5 pt-1 pb-2">' +
+                  '<div class="fs-12 mb-0">' +
+                  comment +
+                  "</div>" +
+                  "</div>" +
+                  "</div>" +
+                  "</div>" +
+                  "</div>";
+                $("#allcomment").prepend(a_c_html);
+                tinyMCE.get("comment").setContent("");
+              } else {
+                toastr.error(data["message"]);
+              }
+            },
+            error: function (xhr, status, error) {
+              clearTimeout(timeout);
+              toastr.error(error);
+              clearTimeout(timeout);
+              setLoadingButton(
+                $(button),
+                false,
+                '<svg xmlns="http://www.w3.org/2000/svg"width="16" height="16" fill="currentColor" class="bi bi-send-fill"viewBox="0 0 16 16"><path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471z" /></svg>'
+              );
+            },
+          });
+        },
+        error: function (xhr, status, error) {
+          clearTimeout(timeout);
+          toastr.error(error);
+          clearTimeout(timeout);
+          setLoadingButton(
+            $(button),
+            false,
+            '<svg xmlns="http://www.w3.org/2000/svg"width="16" height="16" fill="currentColor" class="bi bi-send-fill"viewBox="0 0 16 16"><path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471z" /></svg>'
+          );
+        },
+      });
+    }
   }
   return false;
 }

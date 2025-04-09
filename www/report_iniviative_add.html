@@ -23,6 +23,7 @@
     <script src="assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- <script src="assets/js/plugins.js"></script> -->
     <script src="assets/plugins/select2/js/select2.min.js"></script>
+    <script src="controller/cached_ajax.js"></script>
     <!-- <script src="assets/js/theme.js"></script> -->
     <link rel="stylesheet" type="text/css" href="assets/plugins/toastr/toastr.min.css">
     <script src="assets/plugins/toastr/toastr.min.js"></script>
@@ -122,12 +123,33 @@
             document.getElementById('notificationSound').play();
         }
     </script>
+    <script src="cordova.js"></script>
+    <script>
+        document.addEventListener("deviceready", function () {
+            console.log("Device Ready Activity");
+            document.addEventListener("offline", onOffline, false);
+            document.addEventListener("online", onOnline, false);
+            function onOffline() {
+                $("#noConnAlert").removeClass("d-none");
+                console.log("Offline");
+            }
+            function onOnline() {
+                $("#noConnAlert").addClass("d-none");
+                console.log("Online");
+                const userId = localStorage.getItem("id");
+                const subacId = localStorage.getItem("id_subac_detail");
+
+            }
+        }, false);
+    </script>
 </body>
 
 <section class="wrapper" style="padding-bottom: 70px !important;" id="base_wrapper">
     <span class="d-none countnumbnotif2" id="countnumbnotif2"></span>
     <div class="container p-3" style="z-index: 4; position:relative;">
-
+        <div class="alert alert-danger-2 d-none" role="alert" id="noConnAlert">
+            You are using offline mode, please check your internet connection.
+        </div>
         <form id="add_report_form" method="POST" enctype="multipart/form-data">
             <input type="hidden" id="createdBy" name="createdBy">
             <div class="row justify-content-center">
@@ -150,11 +172,13 @@
                             <option selected value="" disabled>Select location</option>
                         </select>
                     </div> -->
-                    
+
 
                     <div class="custom-select col-12 mb-3">
-                        <label for="location" class="form-label text-dark">Location<label class="text-danger">*</label></label>
-                        <div class="select-box form-select"><div id="selected-locations"></div>
+                        <label for="location" class="form-label text-dark">Location<label
+                                class="text-danger">*</label></label>
+                        <div class="select-box form-select">
+                            <div id="selected-locations"></div>
                         </div>
                         <div class="options-container">
                             <input type="text" class="search-box" placeholder="Type location here...">
@@ -228,93 +252,99 @@
 
 <script src="controller/main.js"></script>
 
-<script >
-document.addEventListener("DOMContentLoaded", function () {
-    const selectBox = document.querySelector(".select-box");
-    const optionsContainer = document.querySelector(".options-container");
-    const optionsList = document.querySelector(".options-list");
-    const searchBox = document.querySelector(".search-box");
-    const hiddenInput = document.getElementById("location");
-    const selectedContainer = document.getElementById("selected-locations");
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const selectBox = document.querySelector(".select-box");
+        const optionsContainer = document.querySelector(".options-container");
+        const optionsList = document.querySelector(".options-list");
+        const searchBox = document.querySelector(".search-box");
+        const hiddenInput = document.getElementById("location");
+        const selectedContainer = document.getElementById("selected-locations");
 
-    let selectedIds = []; // Array untuk menyimpan ID lokasi yang dipilih
-    let selectedNames = []; // Array untuk menyimpan nama lokasi
-    
-    // Fetch data lokasi dari server
-    function fetchLocations(searchTerm = "") {
-        
-        fetch(url_endpoint + '/get_data_location?search='+searchTerm)
-            .then(response => response.json())
-            .then(data => {
-                optionsList.innerHTML = ""; // Kosongkan sebelum menambahkan opsi baru
-                data.forEach(item => {
-                    const option = document.createElement("div");
-                    option.classList.add("option");
-                    option.textContent = item.text;
-                    option.setAttribute("data-value", item.id);
-                    
-                    option.addEventListener("click", function () {
-                        const selectedId = this.getAttribute("data-value");
-                        const selectedText = this.textContent;
-                        if (!selectedIds.includes(selectedId) && selectedIds.length < 1) {
-                            selectedIds.push(selectedId);
-                            selectedNames.push(selectedText);
-                            updateSelectedLocations();
-                        }
+        let selectedIds = []; // Array untuk menyimpan ID lokasi yang dipilih
+        let selectedNames = []; // Array untuk menyimpan nama lokasi
+
+        // Fetch data lokasi dari server
+        function fetchLocations(searchTerm = "") {
+
+            cachedAjax({
+                url: url_endpoint + '/get_data_location',
+                method: 'GET',
+                data: { search: searchTerm },
+                dataType: 'json',
+                success: function (data, isCache) {
+                    optionsList.innerHTML = ""; // Kosongkan sebelum menambahkan opsi baru
+                    data.forEach(item => {
+                        const option = document.createElement("div");
+                        option.classList.add("option");
+                        option.textContent = item.text;
+                        option.setAttribute("data-value", item.id);
+
+                        option.addEventListener("click", function () {
+                            const selectedId = this.getAttribute("data-value");
+                            const selectedText = this.textContent;
+                            if (!selectedIds.includes(selectedId) && selectedIds.length < 1) {
+                                selectedIds.push(selectedId);
+                                selectedNames.push(selectedText);
+                                updateSelectedLocations();
+                            }
+                        });
+
+                        optionsList.appendChild(option);
                     });
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error fetching locations:", error);
+                }
+            });
+        }
 
-                    optionsList.appendChild(option);
+        // Update tampilan lokasi yang sudah dipilih
+        function updateSelectedLocations() {
+            selectedContainer.innerHTML = ""; // Kosongkan tampilan sebelumnya
+            selectedNames.forEach((name, index) => {
+                const badge = document.createElement("span");
+                badge.classList.add("badge", "bg-primary", "m-1", "p-2");
+                badge.textContent = name;
+
+                // Tombol hapus untuk setiap lokasi yang dipilih
+                const removeBtn = document.createElement("span");
+                removeBtn.textContent = " X";
+                removeBtn.style.cursor = "pointer";
+                removeBtn.addEventListener("click", function () {
+                    selectedIds.splice(index, 1);
+                    selectedNames.splice(index, 1);
+                    updateSelectedLocations();
                 });
-            })
-            .catch(error => console.error("Error fetching locations:", error));
-    }
 
-    // Update tampilan lokasi yang sudah dipilih
-    function updateSelectedLocations() {
-        selectedContainer.innerHTML = ""; // Kosongkan tampilan sebelumnya
-        selectedNames.forEach((name, index) => {
-            const badge = document.createElement("span");
-            badge.classList.add("badge", "bg-primary", "m-1", "p-2");
-            badge.textContent = name;
+                badge.appendChild(removeBtn);
+                selectedContainer.appendChild(badge);
+                searchBox.value = '';
+                optionsContainer.style.display = optionsContainer.style.display === "block" ? "none" : "block";
 
-            // Tombol hapus untuk setiap lokasi yang dipilih
-            const removeBtn = document.createElement("span");
-            removeBtn.textContent = " X";
-            removeBtn.style.cursor = "pointer";
-            removeBtn.addEventListener("click", function () {
-                selectedIds.splice(index, 1);
-                selectedNames.splice(index, 1);
-                updateSelectedLocations();
             });
 
-            badge.appendChild(removeBtn);
-            selectedContainer.appendChild(badge);
-            searchBox.value = '';
+            hiddenInput.value = JSON.stringify(selectedIds); // Simpan ID dalam input hidden
+        }
+
+        // Tampilkan atau sembunyikan dropdown
+        selectBox.addEventListener("click", function () {
             optionsContainer.style.display = optionsContainer.style.display === "block" ? "none" : "block";
-            
         });
 
-        hiddenInput.value = JSON.stringify(selectedIds); // Simpan ID dalam input hidden
-    }
+        // Pencarian lokasi
+        searchBox.addEventListener("input", function () {
 
-    // Tampilkan atau sembunyikan dropdown
-    selectBox.addEventListener("click", function () {
-        optionsContainer.style.display = optionsContainer.style.display === "block" ? "none" : "block";
+            fetchLocations(this.value);
+        });
+
+        // Tutup dropdown jika klik di luar
+        document.addEventListener("click", function (e) {
+            if (!selectBox.contains(e.target) && !optionsContainer.contains(e.target)) {
+                optionsContainer.style.display = "none";
+            }
+        });
+
+        fetchLocations();
     });
-
-    // Pencarian lokasi
-    searchBox.addEventListener("input", function () {
-   
-        fetchLocations(this.value);
-    });
-
-    // Tutup dropdown jika klik di luar
-    document.addEventListener("click", function (e) {
-        if (!selectBox.contains(e.target) && !optionsContainer.contains(e.target)) {
-            optionsContainer.style.display = "none";
-        }
-    });
-
-    fetchLocations();
-});
 </script>

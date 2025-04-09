@@ -104,51 +104,50 @@ var dataExpenditure = [];
 var type1 = "mandatory";
 
 function setzero(event) {
-  var inputx = event.target.value;
-  if (inputx == "" || inputx == null || inputx == undefined) {
-    event.target.value = "";
-  }
-  const beneficiery = document.getElementsByClassName(
-    "activity_report_achievmentx"
-  );
-  var total_beneficiery = 0;
-  for (var i = 0; i < beneficiery.length; i++) {
-    total_beneficiery =
-      parseInt(total_beneficiery) + parseInt(beneficiery[i].value);
-  }
-  // console.log(total_beneficiery);
-  var tot_male = document.getElementById("achievment_male_id").value;
-  var tot_female = document.getElementById("achievment_female_id").value;
-
-  if (tot_male == "") {
-    tot_male = 0;
-  } else {
-    tot_male = parseInt(tot_male);
-  }
-  if (tot_female == "") {
-    tot_female = 0;
-  } else {
-    tot_female = parseInt(tot_female);
-  }
-  var tot_gender = tot_male + tot_female;
-  // console.log(tot_male);
-  // console.log(tot_female);
-  // console.log(tot_gender);
-  // console.log(total_beneficiery);
-  if (total_beneficiery > tot_gender) {
-    var min_tot = total_beneficiery - tot_gender;
-    document.getElementById("beneficiaryArea").innerHTML =
-      min_tot + " Beneficiary left";
-    // document.getElementById('submitReportBTN').type = "button";
-  } else if (total_beneficiery == tot_gender) {
-    document.getElementById("beneficiaryArea").innerHTML = "";
-    // document.getElementById('submitReportBTN').type = "submit";
-  } else if (total_beneficiery < tot_gender) {
-    var min_tot2 = tot_gender - total_beneficiery;
-    document.getElementById("beneficiaryArea").innerHTML =
-      "excess " + min_tot2 + " Beneficiary";
-    // document.getElementById('submitReportBTN').type = "button";
-  }
+  // var inputx = event.target.value;
+  // if (inputx == "" || inputx == null || inputx == undefined) {
+  //   event.target.value = "";
+  // }
+  // const beneficiery = document.getElementsByClassName(
+  //   "activity_report_achievmentx"
+  // );
+  // var total_beneficiery = 0;
+  // for (var i = 0; i < beneficiery.length; i++) {
+  //   total_beneficiery =
+  //     parseInt(total_beneficiery) + parseInt(beneficiery[i].value);
+  // }
+  // // console.log(total_beneficiery);
+  // var tot_male = document.getElementById("achievment_male_id").value;
+  // var tot_female = document.getElementById("achievment_female_id").value;
+  // if (tot_male == "") {
+  //   tot_male = 0;
+  // } else {
+  //   tot_male = parseInt(tot_male);
+  // }
+  // if (tot_female == "") {
+  //   tot_female = 0;
+  // } else {
+  //   tot_female = parseInt(tot_female);
+  // }
+  // var tot_gender = tot_male + tot_female;
+  // // console.log(tot_male);
+  // // console.log(tot_female);
+  // // console.log(tot_gender);
+  // // console.log(total_beneficiery);
+  // if (total_beneficiery > tot_gender) {
+  //   var min_tot = total_beneficiery - tot_gender;
+  //   document.getElementById("beneficiaryArea").innerHTML =
+  //     min_tot + " Beneficiary left";
+  //   // document.getElementById('submitReportBTN').type = "button";
+  // } else if (total_beneficiery == tot_gender) {
+  //   document.getElementById("beneficiaryArea").innerHTML = "";
+  //   // document.getElementById('submitReportBTN').type = "submit";
+  // } else if (total_beneficiery < tot_gender) {
+  //   var min_tot2 = tot_gender - total_beneficiery;
+  //   document.getElementById("beneficiaryArea").innerHTML =
+  //     "excess " + min_tot2 + " Beneficiary";
+  //   // document.getElementById('submitReportBTN').type = "button";
+  // }
 }
 
 $(document).ready(function () {
@@ -231,7 +230,7 @@ $(document).ready(function () {
           $("#btn-add-milestone").html(
             '<button type="button" id="add-milestone-button" class="btn btn-primary btn-sm px-1" data-num="0" onclick="add_milestone(' +
               data.data["milestone"][localStorage.id_subac_detail].length +
-              ')">Add Beneficiary</button>'
+              ')">Add Achievement</button>'
           );
         }
         document.getElementById("date").valueAsDate = new Date();
@@ -584,16 +583,34 @@ $(document).ready(function () {
       if (!navigator.onLine) {
         const userId = localStorage.id;
         const subacId = localStorage.id_subac_detail;
+        const currentDate = new Date();
+        const utcMilliseconds = currentDate.getUTCMilliseconds();
+
+        const data = {};
+
+        for (let [key, value] of formData.entries()) {
+          if (data[key]) {
+            if (!Array.isArray(data[key])) {
+              data[key] = [data[key]];
+            }
+            data[key].push(value);
+          } else {
+            data[key] = value;
+          }
+        }
+
         const offlineData = {
+          id: utcMilliseconds,
           url: url_endpoint + "ajaxAddReport",
-          data: Object.fromEntries(formData.entries()),
+          data: data,
           timestamp: new Date().toISOString(),
         };
         let offlineReports =
           JSON.parse(
             localStorage.getItem("offlineReports_" + subacId + "_" + userId)
           ) || [];
-        offlineReports.push(offlineData);
+        offlineReports.push(JSON.stringify(offlineData));
+        console.log(offlineReports);
         localStorage.setItem(
           "offlineReports_" + subacId + "_" + userId,
           JSON.stringify(offlineReports)

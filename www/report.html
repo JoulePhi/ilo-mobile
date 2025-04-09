@@ -21,6 +21,7 @@
     <link href="assets/plugins/summernote/summernote.min.css" rel="stylesheet" />
     <script src="assets/plugins/tinymce/tinymce.min.js"></script>
     <script src="assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="controller/cached_ajax.js"></script>
     <!-- <script src="assets/js/plugins.js"></script> -->
     <script src="assets/plugins/select2/js/select2.min.js"></script>
     <!-- <script src="assets/js/theme.js"></script> -->
@@ -109,9 +110,103 @@
             document.getElementById('notificationSound').play();
         }
     </script>
+    <script src="cordova.js"></script>
+    <script>
+        document.addEventListener("deviceready", function () {
+            console.log("Device Ready Activity");
+            document.addEventListener("offline", onOffline, false);
+            document.addEventListener("online", onOnline, false);
+            function onOffline() {
+                $("#noConnAlert").removeClass("d-none");
+                console.log("Offline");
+            }
+            function onOnline() {
+                $("#noConnAlert").addClass("d-none");
+                console.log("Online");
+                const userId = localStorage.getItem("id");
+                const subacId = localStorage.getItem("id_subac_detail");
+                var localInitiativeReport = localStorage.getItem(
+                    "offlineReportInitiative_" + subacId + "_" + userId
+                );
+                console.log(localInitiativeReport);
+                localInitiativeReport = JSON.parse(localInitiativeReport);
+                let localInitiativeReportLength = 0;
+                let localInitiativeReportCount = 0;
+
+                if (localInitiativeReport) {
+                    Swal.fire({
+                        title: 'Sending Offline Data',
+                        html: 'Please wait while we send your data.',
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            Swal.showLoading()
+                        }
+                    });
+                }
+
+                if (localInitiativeReport) {
+                    localInitiativeReportLength = localInitiativeReport.length;
+                    localInitiativeReport.reverse();
+                    for (let i = 0; i < localInitiativeReport.length; i++) {
+                        const formData = new FormData();
+                        let reports = JSON.parse(localInitiativeReport[i]);
+                        let ofReport = reports["data"];
+                        for (const key in ofReport) {
+                            if (ofReport.hasOwnProperty(key)) {
+                                const value = ofReport[key];
+                                if (Array.isArray(value)) {
+                                    value.forEach(item => {
+                                        formData.append(key, item);
+                                    });
+                                } else {
+                                    formData.append(key, value);
+                                }
+                            }
+                        }
+                        console.log(formData);
+                        $.ajax({
+                            type: "POST",
+                            url: reports['url'],
+                            data: formData,
+                            dataType: "json",
+                            contentType: false,
+                            processData: false,
+                            success: function (data) {
+                                if (data.status == "success") {
+                                    localInitiativeReport.splice(i, 1);
+                                    localStorage.setItem("offlineReportInitiative_" + subacId + "_" + userId, JSON.stringify(localInitiativeReport));
+                                    localInitiativeReportCount++;
+                                    if (localInitiativeReportCount == localInitiativeReportLength) {
+                                        localStorage.removeItem("offlineReportInitiative_" + subacId + "_" + userId);
+                                        console.log("All local data have been sent");
+                                        toastr.success("All local data have been sent");
+                                        setTimeout(function () {
+                                            location.reload();
+                                        }, 1000);
+
+                                    }
+                                } else {
+                                    Swal.fire({
+                                        title: "Add Report Failed",
+                                        text: "Failed to add report, please try again later",
+                                        icon: "error",
+                                    });
+                                }
+                            },
+                        });
+                    }
+                }
+
+            }
+        }, false);
+    </script>
 </body>
 <section class="wrapper" style="padding-bottom: 70px !important;" id="base_wrapper">
     <span class="d-none countnumbnotif2" id="countnumbnotif2"></span>
+    <div class="alert alert-danger-2 d-none" role="alert" id="noConnAlert">
+        You are using offline mode, please check your internet connection.
+    </div>
+
     <div class="container p-3" style="z-index: 4; position:relative;" id="list_report">
 
     </div>

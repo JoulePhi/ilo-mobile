@@ -8,6 +8,119 @@ $(document).ready(function () {
 
 var datax = "";
 $(document).ready(function () {
+  var list_activity = document.getElementById("list_activity");
+  const userId = localStorage.getItem("id");
+  const subacId = localStorage.getItem("id_subac_detail");
+  var localActivity = localStorage.getItem(
+    "offlineActivity_" + subacId + "_" + userId
+  );
+  console.log(localActivity);
+  localActivity = JSON.parse(localActivity);
+  const localActivityLength = 0;
+  let localActivityCount = 0;
+  if (localActivity) {
+    localActivityCount = localActivity.length;
+    localActivity.reverse();
+
+    for (let i = 0; i < localActivity.length; i++) {
+      let activity = JSON.parse(localActivity[i]);
+      let actData = activity["data"];
+      var border_color = "#FF6F00";
+      var code_color = "#FF6F00";
+      var start = changeDateFormat2(actData["start_date"]);
+      var due = changeDateFormat2(actData["due_date"]);
+      var lsitcity = "";
+      let cachedLocation = localStorage.getItem(
+        url_endpoint + "/get_data_location"
+      );
+      console.log("cachedLocation", cachedLocation);
+      if (cachedLocation) {
+        let dataLocation = JSON.parse(cachedLocation);
+        let selectedLocations = dataLocation.filter((item) =>
+          actData["locations"].includes(item.id)
+        );
+        console.log("selectedLocations", JSON.stringify(selectedLocations));
+        let locationNames = selectedLocations.map(
+          (location) => location.type + " " + location.name
+        );
+        for (let j = 0; j < locationNames.length; j++) {
+          lsitcity += '<li class="fw-bold fs-12">' + locationNames[j] + "</li>";
+        }
+      }
+      list_activity.innerHTML +=
+        '<div class="row mb-5">' +
+        '<div class="col-12" >' +
+        '<div class="card shadow-xl border ' +
+        border_color +
+        '" style="box-shadow: 0px -5px ' +
+        code_color +
+        ' !important;">' +
+        '<div class="card-header text-ilo-dark-blue pb-0 ps-5 pe-5" style="border:none !important;">' +
+        '<a href="javascript:void(0)" class="title-text" ><h6 class="text-dark " >' +
+        "<b><b>" +
+        actData["title"] +
+        "</b></b>" +
+        "</h6></a>" +
+        '<div class="row">' +
+        '<div class="col-12 mb-1">' +
+        '<span class="badge badge-warning bg-danger">Offline</span>' +
+        " " +
+        '<span class="badge border border-dark bg-bg-white text-dark">Mandatory</span>' +
+        "</div>" +
+        '<div class="col-6 pe-1" style="border-right: 1px solid #d2d0d0;">' +
+        '<p class="card-text text-dark">' +
+        "<small>" +
+        '<b class="row"><span >Start Date: </span><span class="text-primary">' +
+        start +
+        "</span></b>" +
+        "</small>" +
+        "</p>" +
+        "</div>" +
+        '<div class="col-6 pe-1">' +
+        '<p class="card-text text-dark">' +
+        "<small>" +
+        '<b class="row"><span >Due Date: </span><span class="text-danger">' +
+        due +
+        "</span></b>" +
+        "</small>" +
+        "</p>" +
+        "</div>" +
+        "</div>" +
+        '<hr class="m-0 mt-2 mb-2">' +
+        "</div>" +
+        '<div class="card-body pt-0 ps-5 pe-5">' +
+        '<div class="row">' +
+        '<div class="col-12">' +
+        '<div class="row">' +
+        '<div class="col-12">' +
+        '<p class="mb-0"><b class="text-ilo-dark-blue">Milestone:</b></p>' +
+        "" +
+        '<p class="mt-3 mb-0"><b class="text-ilo-dark-blue">Locations:</b></p>' +
+        '<div class="d-flex">' +
+        '<div class="col-1">' +
+        '<i class="uil uil-map-pin-alt col-2 p-1 text-ilo-dark-blue"></i>' +
+        "</div >" +
+        '<div class="col-10">' +
+        '<ul class="mb-0 fs-10 ps-4">' +
+        lsitcity +
+        "</ul>" +
+        "</div>" +
+        "</div>" +
+        "</div>" +
+        "</div>" +
+        '<div class="row">' +
+        '<div class="col-12 text-center">' +
+        "" +
+        "</div>" +
+        "</div>" +
+        "</div>" +
+        "</div>" +
+        "</div>" +
+        "</div>" +
+        "</div >" +
+        "</div >";
+    }
+  }
   cachedAjax({
     url: url_endpoint + "get_data_sub_activities?id_user=" + localStorage.id,
     cacheKey: "get_data_sub_activities",
@@ -18,7 +131,6 @@ $(document).ready(function () {
         console.log("Data diambil dari server");
       }
       if (data.status == "SUCCESS") {
-        var list_activity = document.getElementById("list_activity");
         if (data.data["dactivity"].length > 0) {
           for (let i = 0; i < data.data["dactivity"].length; i++) {
             var sub_activity_id = data.data["dactivity"][i]["sub_activity_id"];
