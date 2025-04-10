@@ -1,3 +1,83 @@
+function uploadLocalData() {
+  const userId = localStorage.getItem("id");
+  const subacId = localStorage.getItem("id_subac_detail");
+  var localActivity = localStorage.getItem(
+    "offlineActivity_" + subacId + "_" + userId
+  );
+  console.log(localActivity);
+  localActivity = JSON.parse(localActivity);
+  let localActivityLength = 0;
+  let localActivityCount = 0;
+
+  if (localActivity) {
+    Swal.fire({
+      title: "Sending Offline Data",
+      html: "Please wait while we send your data.",
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
+  }
+
+  if (localActivity) {
+    localActivityLength = localActivity.length;
+    localActivity.reverse();
+    for (let i = 0; i < localActivity.length; i++) {
+      const formData = new FormData();
+      let reports = JSON.parse(localActivity[i]);
+      let ofReport = reports["data"];
+      for (const key in ofReport) {
+        if (ofReport.hasOwnProperty(key)) {
+          const value = ofReport[key];
+          if (Array.isArray(value)) {
+            value.forEach((item) => {
+              formData.append(key, item);
+            });
+          } else {
+            formData.append(key, value);
+          }
+        }
+      }
+      console.log(formData);
+      $.ajax({
+        type: "POST",
+        url: reports["url"],
+        data: formData,
+        dataType: "json",
+        contentType: false,
+        processData: false,
+        success: function (data) {
+          if (data.status == "success") {
+            localActivity.splice(i, 1);
+            localStorage.setItem(
+              "offlineActivity_" + subacId + "_" + userId,
+              JSON.stringify(localActivity)
+            );
+            localActivityCount++;
+            if (localActivityCount == localActivityLength) {
+              localStorage.removeItem(
+                "offlineActivity_" + subacId + "_" + userId
+              );
+              console.log("All local data have been sent");
+              toastr.success("All local data have been sent");
+              setTimeout(function () {
+                location.reload();
+              }, 1000);
+            }
+          } else {
+            Swal.fire({
+              title: "Add Activity Failed",
+              text: "Failed to add report, please try again later",
+              icon: "error",
+            });
+          }
+        },
+      });
+    }
+  }
+}
+
 $(document).ready(function () {
   var userid = localStorage.id;
   if (userid == null || userid == "undefined") {
@@ -19,6 +99,9 @@ $(document).ready(function () {
   const localActivityLength = 0;
   let localActivityCount = 0;
   if (localActivity) {
+    if (navigator.onLine) {
+      uploadLocalData();
+    }
     localActivityCount = localActivity.length;
     localActivity.reverse();
 

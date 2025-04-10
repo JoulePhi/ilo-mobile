@@ -1,3 +1,325 @@
+function uploadLocalData() {
+  const userId = localStorage.getItem("id");
+  const subacId = localStorage.getItem("id_subac_detail");
+  var localReports = localStorage.getItem(
+    "offlineReports_" + subacId + "_" + userId
+  );
+  localReports = JSON.parse(localReports);
+  let localReportsLength = 0;
+  let localReportsCount = 0;
+
+  var localExpenditure = localStorage.getItem(
+    "offlineExpenditureBudget_" + subacId + "_" + userId
+  );
+  localExpenditure = JSON.parse(localExpenditure);
+  let localExpenditureLength = 0;
+  let localExpenditureCount = 0;
+
+  var localComment = localStorage.getItem(
+    "offlineComment_" + subacId + "_" + userId
+  );
+  localComment = JSON.parse(localComment);
+  let localCommentLength = 0;
+  let localCommentCount = 0;
+
+  if (localExpenditure || localReports || localComment) {
+    Swal.fire({
+      title: "Sending Offline Data",
+      html: "Please wait while we send your data.",
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
+  }
+
+  if (localReports) {
+    localReportsLength = localReports.length;
+    localReports.reverse();
+    for (let i = 0; i < localReports.length; i++) {
+      const formData = new FormData();
+      let reports = JSON.parse(localReports[i]);
+      let ofReport = reports["data"];
+
+      for (const key in ofReport) {
+        if (ofReport.hasOwnProperty(key)) {
+          const value = ofReport[key];
+          if (Array.isArray(value)) {
+            value.forEach((item) => {
+              formData.append(key, item);
+            });
+          } else {
+            formData.append(key, value);
+          }
+        }
+      }
+      let attacmnets = [];
+      formData.set("attachment[]", null);
+      if (ofReport["attachment[]"]) {
+        const filePromises = ofReport["attachment[]"].map((fileInfo) => {
+          return new Promise((resolve, reject) => {
+            window.resolveLocalFileSystemURL(
+              fileInfo.fullPath,
+              function (fileEntry) {
+                fileEntry.file(function (file) {
+                  const reader = new FileReader();
+                  reader.onloadend = function () {
+                    const blob = new Blob([new Uint8Array(reader.result)], {
+                      type: file.type,
+                    });
+                    attacmnets.push(file.name);
+                    formData.append("attachment[]", blob, file.name);
+                    resolve();
+                  };
+
+                  reader.onerror = reject;
+                  reader.readAsArrayBuffer(file); // Read as binary
+                }, reject);
+              },
+              reject
+            );
+          });
+        });
+
+        Promise.all(filePromises)
+          .then(() => {
+            console.log("attachments : ", attacmnets);
+            console.log("Form Data : ", formDataToString(formData));
+            $.ajax({
+              type: "POST",
+              url: reports["url"],
+              data: formData,
+              dataType: "json",
+              contentType: false,
+              processData: false,
+              success: function (data) {
+                if (data.status == "success") {
+                  localReports.splice(i, 1);
+                  localStorage.setItem(
+                    "offlineReports_" + subacId + "_" + userId,
+                    JSON.stringify(localReports)
+                  );
+                  localReportsCount++;
+                  if (
+                    localExpenditureCount == localExpenditureLength &&
+                    localReportsCount == localReportsLength &&
+                    localCommentCount == localCommentLength
+                  ) {
+                    localStorage.removeItem(
+                      "offlineReports_" + subacId + "_" + userId
+                    );
+                    localStorage.removeItem(
+                      "offlineExpenditureBudget_" + subacId + "_" + userId
+                    );
+                    localStorage.removeItem(
+                      "offlineComment_" + subacId + "_" + userId
+                    );
+                    console.log("All local data have been sent");
+                    toastr.success("All local data have been sent");
+                    setTimeout(function () {
+                      location.reload();
+                    }, 1000);
+                  }
+                } else {
+                  Swal.fire({
+                    title: "Add Report Failed",
+                    text: "Failed to add report, please try again later",
+                    icon: "error",
+                  });
+                }
+              },
+            });
+          })
+          .catch((err) => {
+            console.error("Failed to prepare files for upload:", err);
+          });
+      } else {
+        console.log("attachments : ", attacmnets);
+        console.log("Form Data : ", formDataToString(formData));
+        $.ajax({
+          type: "POST",
+          url: reports["url"],
+          data: formData,
+          dataType: "json",
+          contentType: false,
+          processData: false,
+          success: function (data) {
+            if (data.status == "success") {
+              localReports.splice(i, 1);
+              localStorage.setItem(
+                "offlineReports_" + subacId + "_" + userId,
+                JSON.stringify(localReports)
+              );
+              localReportsCount++;
+              if (
+                localExpenditureCount == localExpenditureLength &&
+                localReportsCount == localReportsLength &&
+                localCommentCount == localCommentLength
+              ) {
+                localStorage.removeItem(
+                  "offlineReports_" + subacId + "_" + userId
+                );
+                localStorage.removeItem(
+                  "offlineExpenditureBudget_" + subacId + "_" + userId
+                );
+                localStorage.removeItem(
+                  "offlineComment_" + subacId + "_" + userId
+                );
+                console.log("All local data have been sent");
+                toastr.success("All local data have been sent");
+                setTimeout(function () {
+                  location.reload();
+                }, 1000);
+              }
+            } else {
+              Swal.fire({
+                title: "Add Report Failed",
+                text: "Failed to add report, please try again later",
+                icon: "error",
+              });
+            }
+          },
+        });
+      }
+    }
+  }
+
+  if (localExpenditure) {
+    localExpenditureLength = localExpenditure.length;
+    localExpenditure.reverse();
+    for (let i = 0; i < localExpenditure.length; i++) {
+      const formData = new FormData();
+      let reports = JSON.parse(localExpenditure[i]);
+      let ofReport = reports["data"];
+      for (const key in ofReport) {
+        if (ofReport.hasOwnProperty(key)) {
+          const value = ofReport[key];
+          if (Array.isArray(value)) {
+            value.forEach((item) => {
+              formData.append(key, item);
+            });
+          } else {
+            formData.append(key, value);
+          }
+        }
+      }
+      console.log(formData);
+      console.log("Form Data Exp : ", formDataToString(formData));
+      $.ajax({
+        type: "POST",
+        url: reports["url"],
+        data: formData,
+        dataType: "json",
+        contentType: false,
+        processData: false,
+        success: function (data) {
+          if (data.status == "SUCCESS") {
+            localExpenditure.splice(i, 1);
+            localStorage.setItem(
+              "offlineExpenditureBudget_" + subacId + "_" + userId,
+              JSON.stringify(localExpenditure)
+            );
+            localExpenditureCount++;
+            if (
+              localExpenditureCount == localExpenditureLength &&
+              localReportsCount == localReportsLength &&
+              localCommentCount == localCommentLength
+            ) {
+              localStorage.removeItem(
+                "offlineReports_" + subacId + "_" + userId
+              );
+              localStorage.removeItem(
+                "offlineExpenditureBudget_" + subacId + "_" + userId
+              );
+              localStorage.removeItem(
+                "offlineComment_" + subacId + "_" + userId
+              );
+              console.log("All local data have been sent");
+              toastr.success("All local data have been sent");
+              setTimeout(function () {
+                location.reload();
+              }, 1000);
+            }
+          } else {
+            Swal.fire({
+              title: "Add Expenditure Failed",
+              text: "Failed to add Expenditure, please try again later",
+              icon: "error",
+            });
+          }
+        },
+      });
+    }
+  }
+  if (localComment) {
+    localCommentLength = localComment.length;
+    localComment.reverse();
+    for (let i = 0; i < localComment.length; i++) {
+      const formData = new FormData();
+      let reports = JSON.parse(localComment[i]);
+      let ofReport = reports["data"];
+      for (const key in ofReport) {
+        if (ofReport.hasOwnProperty(key)) {
+          const value = ofReport[key];
+          if (Array.isArray(value)) {
+            value.forEach((item) => {
+              formData.append(key, item);
+            });
+          } else {
+            formData.append(key, value);
+          }
+        }
+      }
+      console.log(formData);
+      console.log("Form Data Comment : ", formDataToString(formData));
+      $.ajax({
+        type: "POST",
+        url: reports["url"],
+        data: formData,
+        dataType: "json",
+        contentType: false,
+        processData: false,
+        success: function (data) {
+          if (data.status == "SUCCESS") {
+            localComment.splice(i, 1);
+            localStorage.setItem(
+              "offlineComment_" + subacId + "_" + userId,
+              JSON.stringify(localComment)
+            );
+            localCommentCount++;
+            if (
+              localExpenditureCount == localExpenditureLength &&
+              localReportsCount == localReportsLength &&
+              localCommentCount == localCommentLength
+            ) {
+              localStorage.removeItem(
+                "offlineReports_" + subacId + "_" + userId
+              );
+              localStorage.removeItem(
+                "offlineExpenditureBudget_" + subacId + "_" + userId
+              );
+              localStorage.removeItem(
+                "offlineComment_" + subacId + "_" + userId
+              );
+              console.log("All local data have been sent");
+              toastr.success("All local data have been sent");
+              setTimeout(function () {
+                location.reload();
+              }, 1000);
+            }
+          } else {
+            Swal.fire({
+              title: "Add Comment Failed",
+              text: "Failed to add Expenditure, please try again later",
+              icon: "error",
+            });
+          }
+        },
+      });
+    }
+  }
+}
+
 $(document).ready(function () {
   var userid = localStorage.id;
   if (userid == null || userid == "undefined") {
@@ -24,7 +346,7 @@ $(document).ready(function () {
   );
   console.log(localReports);
   localReports = JSON.parse(localReports);
-  const localReportsLength = 0;
+  let localReportsLength = 0;
   let localReportsCount = 0;
   if (localReports) {
     localReportsLength = localReports.length;
@@ -56,41 +378,6 @@ $(document).ready(function () {
               </a>
             </td>` +
         "</tr>";
-      if (navigator.onLine) {
-        // const formData = new FormData();
-        // for (const key in ofReport) {
-        //   if (ofReport.hasOwnProperty(key)) {
-        //     formData.append(key, ofReport[key]);
-        //   }
-        // }
-        // $.ajax({
-        //   type: "POST",
-        //   url: reports["url"],
-        //   data: formData,
-        //   dataType: "json",
-        //   contentType: false,
-        //   processData: false,
-        //   success: function (data) {
-        //     if (data.status == "success") {
-        //       localReports.splice(i, 1);
-        //       localStorage.setItem(
-        //         "offlineReports_" + subacId + "_" + userId,
-        //         JSON.stringify(localReports)
-        //       );
-        //       localReportsCount++;
-        //       if (localReportsCount == localReportsLength) {
-        //         console.log("All reports have been sent");
-        //         toastr.success("All reports have been sent");
-        //         setTimeout(function () {
-        //           location.reload();
-        //         }, 2000);
-        //       }
-        //     } else {
-        //       console.log("Failed to send report");
-        //     }
-        //   },
-        // });
-      }
     }
   }
   cachedAjax({

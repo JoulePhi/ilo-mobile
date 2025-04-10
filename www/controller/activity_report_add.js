@@ -526,6 +526,37 @@ $(document).ready(function () {
       selector: "#description",
     });
   }
+
+  function saveFileToAppStorage(file) {
+    return new Promise((resolve, reject) => {
+      window.resolveLocalFileSystemURL(
+        cordova.file.dataDirectory,
+        function (dirEntry) {
+          dirEntry.getFile(
+            Date.now() + "_" + file.name,
+            { create: true, exclusive: false },
+            function (newFileEntry) {
+              newFileEntry.createWriter(function (fileWriter) {
+                fileWriter.onwriteend = function () {
+                  resolve({
+                    name: newFileEntry.name,
+                    fullPath: newFileEntry.nativeURL,
+                  });
+                };
+                fileWriter.onerror = function (e) {
+                  reject(e);
+                };
+                fileWriter.write(file); // this works because input.files[] gives us a File object
+              }, reject);
+            },
+            reject
+          );
+        },
+        reject
+      );
+    });
+  }
+
   $("#add_report_form").on("submit", function (event) {
     event.preventDefault();
     var formData = new FormData(document.querySelector("form#add_report_form"));
@@ -585,40 +616,61 @@ $(document).ready(function () {
         const subacId = localStorage.id_subac_detail;
         const currentDate = new Date();
         const utcMilliseconds = currentDate.getUTCMilliseconds();
-
-        const data = {};
-
-        for (let [key, value] of formData.entries()) {
-          if (data[key]) {
-            if (!Array.isArray(data[key])) {
-              data[key] = [data[key]];
-            }
-            data[key].push(value);
-          } else {
-            data[key] = value;
-          }
-        }
-
-        const offlineData = {
-          id: utcMilliseconds,
-          url: url_endpoint + "ajaxAddReport",
-          data: data,
-          timestamp: new Date().toISOString(),
-        };
-        let offlineReports =
-          JSON.parse(
-            localStorage.getItem("offlineReports_" + subacId + "_" + userId)
-          ) || [];
-        offlineReports.push(JSON.stringify(offlineData));
-        console.log(offlineReports);
-        localStorage.setItem(
-          "offlineReports_" + subacId + "_" + userId,
-          JSON.stringify(offlineReports)
+        const fileInputs = document.querySelectorAll(
+          'input[name="attachment[]"]'
         );
-        toastr.warning("No internet connection. Report saved locally.");
-        setTimeout(function () {
-          window.location.href = "activity.html";
-        }, 2000);
+
+        const attachments = [];
+
+        const promises = Array.from(fileInputs).map((input) => {
+          const file = input.files[0];
+          if (!file) return Promise.resolve();
+
+          return saveFileToAppStorage(file).then((fileMeta) => {
+            attachments.push(fileMeta);
+          });
+        });
+
+        Promise.all(promises).then(() => {
+          const data = {};
+
+          for (let [key, value] of formData.entries()) {
+            if (data[key]) {
+              if (!Array.isArray(data[key])) {
+                data[key] = [data[key]];
+              }
+              data[key].push(value);
+            } else {
+              data[key] = value;
+            }
+          }
+          data["attachment[]"] = attachments;
+
+          console.log(data);
+          // return;
+          const offlineData = {
+            id: utcMilliseconds,
+            url: url_endpoint + "ajaxAddReport",
+            data: data,
+            timestamp: new Date().toISOString(),
+          };
+          console.log(offlineData);
+          // return;
+          let offlineReports =
+            JSON.parse(
+              localStorage.getItem("offlineReports_" + subacId + "_" + userId)
+            ) || [];
+          offlineReports.push(JSON.stringify(offlineData));
+          console.log(offlineReports);
+          localStorage.setItem(
+            "offlineReports_" + subacId + "_" + userId,
+            JSON.stringify(offlineReports)
+          );
+          toastr.warning("No internet connection. Report saved locally.");
+          setTimeout(function () {
+            window.location.href = "activity.html";
+          }, 2000);
+        });
       } else {
         // Proceed with AJAX request if online
         $.ajax({
